@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cards - Vanstra Bank</title>
+    <meta name="description" content="Manage your Vanstra Bank cards. View details, freeze cards, and set limits.">
+    
+    <!-- Custom Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --navy: #041225;
+            --slate: #0B2A3F;
+            --gold: #C89A3A;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #1F2937;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px;
+        }
+
+        h1, h2, h3, .card-number, .card-balance {
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--navy);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .header-title {
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 0;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        
+        /* Card Display */
+        .card-container {
+            padding: 1.5rem 1rem;
+            perspective: 1000px;
+        }
+
+        .credit-card {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .credit-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .credit-card::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(200, 154, 58, 0.1);
+            border-radius: 50%;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-chip {
+            width: 50px;
+            height: 36px;
+            background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .card-chip::before {
+            content: '';
+            position: absolute;
+            border: 1px solid rgba(0,0,0,0.2);
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+        }
+
+        .card-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-logo img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .card-number {
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-top: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .card-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 2px;
+        }
+
+        .card-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-type {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        /* Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 0 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-item {
+            background: white;
+            border-radius: 16px;
+            padding: 1rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-item:active {
+            transform: scale(0.98);
+        }
+
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(200, 154, 58, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+        }
+
+        .action-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #4B5563;
+        }
+
+        /* Settings List */
+        .settings-list {
+            background: white;
+            border-radius: 16px;
+            margin: 0 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .setting-icon {
+            width: 36px;
+            height: 36px;
+            background: #F3F4F6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6B7280;
+        }
+
+        .setting-text h4 {
+            margin: 0;
+            font-size: 14px;
+            color: #1F2937;
+        }
+
+        .setting-text p {
+            margin: 0;
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        /* Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #E5E7EB;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        input:checked + .slider {
+            background-color: var(--gold);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 50;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem 1rem;
+            color: #9CA3AF;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .nav-item.active { color: var(--gold); }
+        
+        .nav-item svg { width: 24px; height: 24px; }
+        .nav-item span { font-size: 11px; font-weight: 500; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .toast.success { background: #10B981; }
+        .toast.error { background: #EF4444; }
+
+        /* Modal Base Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        
+        .modal-overlay.active { display: flex; }
+        
+        .modal-sheet {
+            background: white;
+            width: 100%;
+            max-height: 90vh;
+            border-radius: 24px 24px 0 0;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        
+        .modal-title { font-size: 18px; font-weight: 700; }
+        
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #F3F4F6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .modal-body {
+            padding: 1.25rem;
+            overflow-y: auto;
+            max-height: calc(90vh - 70px);
+        }
+
+        .form-group { margin-bottom: 1.25rem; }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Add Card Modal Styles */
+        .card-select-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-select-option {
+            border: 2px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            background: white;
+        }
+
+        .card-select-option:hover {
+            border-color: #D1D5DB;
+        }
+
+        .card-select-option.active {
+            border-color: var(--gold);
+            background: rgba(200, 154, 58, 0.03);
+            box-shadow: 0 4px 12px rgba(200, 154, 58, 0.1);
+        }
+
+        .card-select-option.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #F9FAFB;
+            border-color: #E5E7EB;
+        }
+
+        .card-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-option-title {
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-option-desc {
+            font-size: 0.85rem;
+            color: #6B7280;
+            line-height: 1.4;
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 100px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-gold {
+            background: rgba(200, 154, 58, 0.15);
+            color: var(--gold);
+        }
+
+        .badge-gray {
+            background: #E5E7EB;
+            color: #6B7280;
+        }
+
+        .design-scroll {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem 0.2rem;
+            scrollbar-width: none;
+            margin-bottom: 0.5rem;
+        }
+        .design-scroll::-webkit-scrollbar { display: none; }
+
+        .design-option {
+            flex: 0 0 120px;
+            height: 75px;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+            overflow: hidden;
+        }
+
+        .design-option.active {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .design-navy { background: linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%); }
+        .design-black { background: linear-gradient(135deg, #111 0%, #333 100%); }
+        .design-gold { background: linear-gradient(135deg, #C89A3A 0%, #F0E68C 100%); }
+
+        .design-preview-chip {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 16px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+
+        .design-check {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            padding: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: flex;
+        }
+
+        .design-option.active .design-check {
+            opacity: 1;
+        }
+
+        .design-label {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6B7280;
+            margin-top: 0.25rem;
+        }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 480px;
+                margin: 0 auto;
+                box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            }
+            
+            .bottom-nav {
+                max-width: 480px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <span class="header-title">My Cards</span>
+        </div>
+    </header>
+
+    <!-- Card Display -->
+    <section class="card-container">
+        <div class="credit-card" id="virtualCard">
+            <div class="card-top">
+                <div class="card-chip"></div>
+                <div class="card-logo">
+                    <span style="font-style: italic;">Vanstra</span>
+                </div>
+            </div>
+            
+            <div class="card-number" id="cardNumber">•••• •••• •••• ••••</div>
+            
+            <div class="card-details">
+                <div>
+                    <div class="card-label">Card Holder</div>
+                    <div class="card-value" id="cardHolderName">LOADING...</div>
+                </div>
+                <div>
+                    <div class="card-label">Expires</div>
+                    <div class="card-value" id="cardExpiry">••/••</div>
+                </div>
+                <div class="card-type">VISA</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Actions -->
+    <section class="actions-grid">
+        <div class="action-item" onclick="toggleCardDetails()">
+            <div class="action-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                </svg>
+            </div>
+            <span class="action-label" id="showDetailsLabel">Show Details</span>
+        </div>
+        
+        <div class="action-item" onclick="toggleFreezeCard()">
+            <div class="action-icon" id="freezeIcon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            <span class="action-label" id="freezeLabel">Freeze</span>
+        </div>
+        
+        <div class="action-item" onclick="openAddCardModal()">
+            <div class="action-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+            </div>
+            <span class="action-label">Add Card</span>
+        </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="settings-list">
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="setting-text">
+                    <h4>Online Payments</h4>
+                    <p>Allow internet transactions</p>
+                </div>
+            </div>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+        
+        <div class="setting-item">
+            <div class="setting-info">
+                <div class="setting-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="setting-text">
+                    <h4>Contactless</h4>
+                    <p>Tap to pay</p>
+                </div>
+            </div>
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+    </section>
+
+    <!-- Add Card Modal -->
+    <div id="addCardModal" class="modal-overlay" onclick="if(event.target === this) closeAddCardModal()">
+        <div class="modal-sheet">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Card</h3>
+                <button class="modal-close" onclick="closeAddCardModal()">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Card Type</label>
+                    <div class="card-select-grid">
+                        <div class="card-select-option active" id="type-virtual" onclick="selectCardType('virtual')">
+                            <div class="card-option-header">
+                                <div class="card-option-title">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Virtual Card
+                                </div>
+                                <span class="badge badge-gold">Free</span>
+                            </div>
+                            <div class="card-option-desc">Instantly available for online payments and subscriptions.</div>
+                        </div>
+                        
+                        <div class="card-select-option disabled">
+                            <div class="card-option-header">
+                                <div class="card-option-title">
+                                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                    </svg>
+                                    Physical Card
+                                </div>
+                                <span class="badge badge-gray">Coming Soon</span>
+                            </div>
+                            <div class="card-option-desc">Premium metal card for in-person spending and withdrawals.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Card Design</label>
+                    <div class="design-scroll">
+                        <div class="design-option design-navy active" id="design-navy" onclick="selectCardDesign('navy')">
+                            <div class="design-preview-chip"></div>
+                            <div class="design-check">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="design-option design-black" id="design-black" onclick="selectCardDesign('black')">
+                            <div class="design-preview-chip"></div>
+                            <div class="design-check">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="design-option design-gold" id="design-gold" onclick="selectCardDesign('gold')">
+                            <div class="design-preview-chip"></div>
+                            <div class="design-check">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="design-label" id="design-name-label">Classic Navy</div>
+                </div>
+
+                <button onclick="confirmAddCard()" class="btn btn-primary w-full mt-4" style="width: 100%; padding: 1rem; background: var(--gold); border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer;">Create Virtual Card</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard-v2.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            <span>Home</span>
+        </a>
+        <a href="dashboard-v2.html" class="nav-item" onclick="localStorage.setItem('openTransfer', 'true');">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+            </svg>
+            <span>Transfer</span>
+        </a>
+        <a href="cards-v2.html" class="nav-item active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+            </svg>
+            <span>Cards</span>
+        </a>
+        <a href="wealth-v2.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Wealth</span>
+        </a>
+        <a href="profile-v2.html" class="nav-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="bank-core-v2.js"></script>
+    <script>
+        // Auto-login demo mode if not authenticated
+        if (!VanstraBank.isAuthenticated()) {
+            const users = VanstraBank.getAllUsers();
+            if (users && Object.keys(users).length > 0) {
+                const firstUserId = Object.keys(users)[0];
+                const firstUser = users[firstUserId];
+                VanstraBank.login(firstUser.email, 'Test1234!');
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        let isDetailsVisible = false;
+        let isFrozen = false;
+        let currentCardIndex = 0;
+        let userCards = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = VanstraBank.getCurrentUser();
+            if (!currentUser) return;
+
+            document.getElementById('cardHolderName').textContent = currentUser.fullName.toUpperCase();
+            
+            // Simulate persistent card data
+            loadCardData(currentUser.id);
+        });
+
+        function loadCardData(userId) {
+            const storedCards = JSON.parse(localStorage.getItem('vanstraCards') || '{}');
+            let data = storedCards[userId];
+            
+            if (!data) {
+                // Generate first virtual card if none exists
+                const newCard = generateCard();
+                userCards = [newCard];
+                saveCards(userId, userCards);
+            } else if (Array.isArray(data)) {
+                userCards = data;
+            } else {
+                // Convert legacy single card object to array
+                userCards = [data];
+                saveCards(userId, userCards);
+            }
+            
+            currentCardIndex = 0;
+            updateCardUI();
+        }
+
+        function generateCard(design = 'navy') {
+            return {
+                id: 'CARD-' + Date.now(),
+                number: '4' + Math.floor(Math.random() * 1000000000000000).toString().padEnd(15, '0'),
+                expiry: '12/28',
+                cvv: Math.floor(Math.random() * 900 + 100).toString(),
+                frozen: false,
+                type: 'virtual',
+                design: design
+            };
+        }
+
+        function saveCards(userId, cards) {
+            const storedCards = JSON.parse(localStorage.getItem('vanstraCards') || '{}');
+            storedCards[userId] = cards;
+            localStorage.setItem('vanstraCards', JSON.stringify(storedCards));
+        }
+
+        function updateCardUI() {
+            if (userCards.length === 0) return;
+            
+            const cardData = userCards[currentCardIndex];
+            isFrozen = cardData.frozen;
+            
+            updateCardDisplay();
+            updateFreezeUI();
+        }
+
+        function updateCardDisplay() {
+            const cardData = userCards[currentCardIndex];
+            const numberEl = document.getElementById('cardNumber');
+            const expiryEl = document.getElementById('cardExpiry');
+            const cardEl = document.getElementById('virtualCard');
+            
+            if (isDetailsVisible) {
+                // Format number with spaces
+                const formatted = cardData.number.match(/.{1,4}/g).join(' ');
+                numberEl.textContent = formatted;
+                expiryEl.textContent = cardData.expiry;
+            } else {
+                numberEl.textContent = '•••• •••• •••• ' + cardData.number.slice(-4);
+                expiryEl.textContent = '••/••';
+            }
+            
+            // Update design
+            if (cardData.design === 'black') {
+                cardEl.style.background = 'linear-gradient(135deg, #111 0%, #333 100%)';
+                cardEl.style.color = 'white';
+            } else if (cardData.design === 'gold') {
+                cardEl.style.background = 'linear-gradient(135deg, #C89A3A 0%, #F0E68C 100%)';
+                cardEl.style.color = '#041225'; // Dark text for gold card
+            } else {
+                // Default Navy
+                cardEl.style.background = 'linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%)';
+                cardEl.style.color = 'white';
+            }
+        }
+
+        function toggleCardDetails() {
+            isDetailsVisible = !isDetailsVisible;
+            const label = document.getElementById('showDetailsLabel');
+            label.textContent = isDetailsVisible ? 'Hide Details' : 'Show Details';
+            updateCardDisplay();
+        }
+
+        function toggleFreezeCard() {
+            if (userCards.length === 0) return;
+            
+            const cardData = userCards[currentCardIndex];
+            isFrozen = !isFrozen;
+            cardData.frozen = isFrozen;
+            
+            // Save state
+            const currentUser = VanstraBank.getCurrentUser();
+            saveCards(currentUser.id, userCards);
+            
+            updateFreezeUI();
+            
+            if (isFrozen) {
+                showToast('Card frozen', 'success');
+            } else {
+                showToast('Card unfrozen', 'success');
+            }
+        }
+
+        function updateFreezeUI() {
+            const cardEl = document.getElementById('virtualCard');
+            const label = document.getElementById('freezeLabel');
+            const icon = document.getElementById('freezeIcon');
+            
+            if (isFrozen) {
+                cardEl.style.opacity = '0.7';
+                cardEl.style.filter = 'grayscale(100%)';
+                label.textContent = 'Unfreeze';
+                icon.style.background = '#FEE2E2';
+                icon.style.color = '#DC2626';
+            } else {
+                cardEl.style.opacity = '1';
+                cardEl.style.filter = 'none';
+                label.textContent = 'Freeze';
+                icon.style.background = 'rgba(200, 154, 58, 0.1)';
+                icon.style.color = 'var(--gold)';
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Modal Functions
+        let selectedCardType = 'virtual';
+        let selectedCardDesign = 'navy';
+        
+        function selectCardType(type) {
+            selectedCardType = type;
+            document.querySelectorAll('.card-select-option').forEach(el => el.classList.remove('active'));
+            if (type === 'virtual') {
+                document.getElementById('type-virtual').classList.add('active');
+            }
+        }
+
+        function selectCardDesign(design) {
+            selectedCardDesign = design;
+            document.querySelectorAll('.design-option').forEach(el => el.classList.remove('active'));
+            document.getElementById('design-' + design).classList.add('active');
+            
+            const labels = {
+                'navy': 'Classic Navy',
+                'black': 'Midnight Black',
+                'gold': 'Prestige Gold'
+            };
+            document.getElementById('design-name-label').textContent = labels[design];
+        }
+
+        function openAddCardModal() {
+            document.getElementById('addCardModal').classList.add('active');
+            document.getElementById('addCardModal').style.display = 'flex';
+            // Reset selection
+            selectCardType('virtual');
+            selectCardDesign('navy');
+        }
+
+        function closeAddCardModal() {
+            document.getElementById('addCardModal').classList.remove('active');
+            document.getElementById('addCardModal').style.display = 'none';
+        }
+
+        function confirmAddCard() {
+            const currentUser = VanstraBank.getCurrentUser();
+            if (!currentUser) return;
+
+            const newCard = generateCard(selectedCardDesign);
+            userCards.push(newCard);
+            saveCards(currentUser.id, userCards);
+            
+            // Switch to new card
+            currentCardIndex = userCards.length - 1;
+            updateCardUI();
+            
+            closeAddCardModal();
+            showToast('New virtual card created', 'success');
+        }
+    </script>
+
+    <!-- Start of vanstracapital Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=246a98ee-fce4-43fb-9f52-9691402e4ca7"> </script>
+<!-- End of vanstracapital Zendesk Widget script -->
+</body>
+</html>
