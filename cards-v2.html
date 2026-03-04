@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cards - Vanstra Bank</title>
     <meta name="description" content="Manage your Vanstra Bank cards. View details, freeze cards, and set limits.">
     
@@ -375,6 +375,7 @@
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.6);
+            -webkit-backdrop-filter: blur(4px);
             backdrop-filter: blur(4px);
             z-index: 200;
             display: none;
@@ -672,7 +673,7 @@
                 </div>
             </div>
             <label class="switch">
-                <input type="checkbox" checked>
+                <input type="checkbox" checked aria-label="Online Payments">
                 <span class="slider"></span>
             </label>
         </div>
@@ -686,13 +687,13 @@
                 </div>
                 <div class="setting-text">
                     <h4>Contactless</h4>
-                    <p>Tap to pay</p>
-                </div>
-            </div>
-            <label class="switch">
-                <input type="checkbox" checked>
-                <span class="slider"></span>
-            </label>
+                                        <p>Tap to pay</p>
+                                    </div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked aria-label="Contactless">
+                                    <span class="slider"></span>
+                                </label>
         </div>
     </section>
 

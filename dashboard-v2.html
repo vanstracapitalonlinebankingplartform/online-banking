@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Vanstra Bank</title>
     <meta name="description" content="Your Vanstra Bank dashboard. View balances, transfer money, pay bills, and manage your finances.">
     
@@ -79,6 +79,7 @@
             z-index: 50;
             border-bottom: 1px solid rgba(200, 154, 58, 0.1);
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
         
@@ -185,6 +186,7 @@
         
         .balance-hidden {
             filter: blur(8px);
+            -webkit-user-select: none;
             user-select: none;
         }
         
@@ -251,6 +253,7 @@
         
         .balance-amount.hidden {
             filter: blur(8px);
+            -webkit-user-select: none;
             user-select: none;
         }
         
@@ -669,6 +672,7 @@
             padding: 0.75rem 0 1rem;
             z-index: 50;
             box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
         
@@ -715,6 +719,7 @@
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,0.5);
+            -webkit-backdrop-filter: blur(6px);
             backdrop-filter: blur(6px);
             z-index: 200;
             display: none;
@@ -799,6 +804,7 @@
             align-items: center;
             justify-content: center;
             z-index: 300;
+            -webkit-backdrop-filter: blur(6px);
             backdrop-filter: blur(6px);
             animation: fadeInOverlay 0.25s ease;
             padding: 24px; /* ensure breathing room on small screens */
@@ -1229,6 +1235,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s;
+            -webkit-user-select: none;
             user-select: none;
         }
         
