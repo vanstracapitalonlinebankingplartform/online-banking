@@ -4823,6 +4823,35 @@
                     setTimeout(() => {
                         window.location.reload();
                     }, 1200);
+                } else if (result.requiresCustomerServiceContact) {
+                    // Code verified — require customer service contact before next code
+                    codeInput.classList.remove('error');
+                    messageEl.innerHTML = `
+                        <div style="text-align: center; line-height: 1.6;">
+                            <div style="font-size: 1.2rem; color: #10B981; margin-bottom: 0.5rem;">✅ Code Verified!</div>
+                            <div style="font-size: 0.95rem; margin-bottom: 1rem;">Please contact our customer service team to proceed with the next verification step.</div>
+                            <div style="font-size: 0.85rem; color: #6B7280; margin-top: 1rem;">After contacting support, refresh this page to continue.</div>
+                        </div>
+                    `;
+                    messageEl.classList.remove('error');
+                    messageEl.classList.add('success');
+
+                    // Disable input
+                    codeInput.disabled = true;
+
+                    // Turn submit into a Contact Support button
+                    submitBtn.type = 'button';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Contact Support';
+                    submitBtn.style.background = 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)';
+                    submitBtn.onclick = () => {
+                        // Open support modal or redirect
+                        if (document.getElementById('supportModal')) {
+                            document.getElementById('supportModal').classList.add('active');
+                        } else {
+                            window.open('contact.html', '_blank');
+                        }
+                    };
                 } else {
                     // Code correct for this step — show success and require explicit Continue
                     codeInput.classList.remove('error');

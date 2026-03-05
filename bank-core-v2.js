@@ -1228,7 +1228,8 @@ const VanstraBank = (function() {
         return {
             success: true,
             completed: false,
-            message: `Code verified! ${challenge.codesRequired.length - challenge.currentStep} more code(s) required.`,
+            requiresCustomerServiceContact: true,
+            message: `Code verified! Please contact customer service before proceeding.`,
             currentStep: challenge.currentStep,
             totalSteps: challenge.codesRequired.length,
             nextCode,
