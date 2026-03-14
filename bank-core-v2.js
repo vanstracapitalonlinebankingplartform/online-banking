@@ -28,9 +28,9 @@ const VanstraBank = (function() {
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
-            hash = hash & 0xffffffff; // Keep as 32-bit integer
+            hash = hash & hash;
         }
-        return (hash >>> 0).toString(16); // Convert to unsigned before hex
+        return hash.toString(16);
     }
 
     // Generate unique IDs
@@ -48,23 +48,6 @@ const VanstraBank = (function() {
 
     // Initialize system
     function init() {
-        // Version flag previously used to reset corrupted data during early
-        // development.  Clearing all users on every upgrade meant that
-        // anyone who created an account would suddenly disappear after the
-        // next release, causing "wrong password" errors and broken reset
-        // flows.  We now keep existing data and only bump the stored version.
-        const currentVersion = '2.1';
-        const storedVersion = localStorage.getItem('vanstraVersion');
-
-        if (storedVersion !== currentVersion) {
-            // do not delete users – only record the upgrade so we can run
-            // migrations in future if necessary
-            localStorage.setItem('vanstraVersion', currentVersion);
-
-            // (optional) perform any one‑time migrations here
-            // e.g. migrate old hash formats, add new fields, etc.
-        }
-
         if (!localStorage.getItem('vanstraUsers')) {
             localStorage.setItem('vanstraUsers', JSON.stringify({}));
         }
@@ -74,7 +57,7 @@ const VanstraBank = (function() {
         if (!localStorage.getItem('adminEvents')) {
             localStorage.setItem('adminEvents', JSON.stringify([]));
         }
-        // Chat system removed: chatMessages no longer initialized
+        // Chat system removed: chatMessages not initialized
     }
 
     init();
@@ -117,8 +100,6 @@ const VanstraBank = (function() {
             phone: userData.phone,
             accountNumber: accountNumber,
             accountType: 'Premium Checking',
-            tier: 'unlimited', // Default tier
-            medal: 'gold', // Default medal
             balance: 5000.00, // Starting balance
             currency: 'EUR',
             status: 'active',
@@ -170,19 +151,10 @@ const VanstraBank = (function() {
     }
 
     function login(email, password) {
-        console.log('🔐 LOGIN ATTEMPT:', email);
-        const usersData = localStorage.getItem('vanstraUsers');
-        console.log('📦 Users data from localStorage:', usersData ? 'exists' : 'MISSING');
-
-        const users = usersData ? JSON.parse(usersData) : {};
-        console.log('👥 All users found:', Object.keys(users).length);
-        // Normalize email for lookup (case-insensitive)
-        const normalizedEmail = (email || '').trim().toLowerCase();
-        const user = Object.values(users).find(u => (u.email || '').trim().toLowerCase() === normalizedEmail);
-        console.log('🔍 User lookup result:', user ? `ID=${user.id}, Email=${user.email}` : 'NOT FOUND');
+        const users = JSON.parse(localStorage.getItem('vanstraUsers'));
+        const user = Object.values(users).find(u => u.email === email);
 
         if (!user) {
-            console.log('❌ User not found in system for email:', normalizedEmail);
             return { success: false, error: 'Invalid email or password' };
         }
 
@@ -190,24 +162,9 @@ const VanstraBank = (function() {
             return { success: false, error: 'Account locked. Contact support.' };
         }
 
-        // Verify password (support multiple legacy formats)
-        const plain = password || '';
-        const computedHash = hashString(plain);
-        const doubleHash = hashString(computedHash);
-
-        const storedHash = user.passwordHash || user.password || null;
-
-        const passwordMatches = (
-            storedHash && (
-                storedHash === computedHash || // normal
-                storedHash === doubleHash ||   // legacy double-hash
-                storedHash === plain           // stored as plain (fallback)
-            )
-        );
-
-        if (!passwordMatches) {
-            console.log('❌ Password verification failed for user:', user.email, { storedHashPreview: (storedHash || '').toString().substr(0,8) });
-            emit('login_failed', { email: user.email, reason: 'invalid_password' });
+        // Verify password hash
+        if (user.passwordHash !== hashString(password)) {
+            emit('login_failed', { email, reason: 'invalid_password' });
             return { success: false, error: 'Invalid email or password' };
         }
 
@@ -215,22 +172,11 @@ const VanstraBank = (function() {
         user.lastLogin = new Date().toISOString();
         user.isOnline = true;
         user.failedPinAttempts = 0;
-        
-        // Ensure tier and medal exist (migration)
-        if (!user.tier) user.tier = 'unlimited';
-        if (!user.medal) user.medal = 'gold';
-
         users[user.id] = user;
         localStorage.setItem('vanstraUsers', JSON.stringify(users));
-        console.log('✅ User saved to localStorage');
 
         // Create session
         const session = createSession(user.id);
-        if (!session || !session.token) {
-            console.error('❌ Failed to create session');
-            return { success: false, error: 'Session creation failed. Please try again.' };
-        }
-        console.log('🔑 Session created:', {token: session.token.substring(0, 20) + '...'});
 
         // Emit to admin
         emit('user_login', { userId: user.id, user: sanitizeForAdmin(user) });
@@ -264,7 +210,6 @@ const VanstraBank = (function() {
             console.warn('Supabase unavailable', e);
         }
 
-        console.log('✅ LOGIN SUCCESS:', {email: user.email, sessionToken: session.token.substring(0, 20) + '...'});
         return { 
             success: true, 
             user: sanitizeForClient(user),
@@ -273,52 +218,28 @@ const VanstraBank = (function() {
     }
 
     function logout(sessionToken) {
-        console.log('🚪 LOGOUT:', sessionToken ? 'Valid token' : 'No token');
         const sessions = JSON.parse(localStorage.getItem('vanstraSessions'));
         const session = sessions[sessionToken];
-        
-        console.log('📍 Session found:', session ? `UserID=${session.userId}` : 'NOT FOUND');
         
         if (session) {
             const users = JSON.parse(localStorage.getItem('vanstraUsers'));
             const user = users[session.userId];
             if (user) {
-                console.log('👤 Updating user:', user.email);
                 user.isOnline = false;
                 users[session.userId] = user;
                 localStorage.setItem('vanstraUsers', JSON.stringify(users));
-                console.log('✅ User marked offline');
                 
                 emit('user_logout', { userId: session.userId });
             }
             delete sessions[sessionToken];
             localStorage.setItem('vanstraSessions', JSON.stringify(sessions));
-            console.log('✅ Session removed');
         }
         
-        localStorage.removeItem('currentSession');
-        console.log('✅ currentSession cleared from localStorage');
         return { success: true };
     }
 
     function createSession(userId) {
-        console.log('🔑 createSession for user:', userId);
-        
-        let sessions = {};
-        const sessionsData = localStorage.getItem('vanstraSessions');
-        
-        if (sessionsData) {
-            try {
-                sessions = JSON.parse(sessionsData);
-                console.log('📍 Loaded existing sessions:', Object.keys(sessions).length);
-            } catch (e) {
-                console.error('❌ Failed to parse vanstraSessions:', e);
-                sessions = {};
-            }
-        } else {
-            console.log('📍 No existing sessions found, starting fresh');
-        }
-        
+        const sessions = JSON.parse(localStorage.getItem('vanstraSessions'));
         const token = 'SES-' + Date.now() + '-' + Math.random().toString(36).substr(2, 8).toUpperCase();
         
         sessions[token] = {
@@ -327,58 +248,26 @@ const VanstraBank = (function() {
             expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
         };
         
-        try {
-            localStorage.setItem('vanstraSessions', JSON.stringify(sessions));
-            console.log('✅ Sessions saved to localStorage');
-        } catch (e) {
-            console.error('❌ Failed to save sessions:', e);
-            return null;
-        }
-        
-        try {
-            localStorage.setItem('currentSession', token);
-            console.log('✅ currentSession token set:', token.substring(0, 20) + '...');
-        } catch (e) {
-            console.error('❌ Failed to set currentSession:', e);
-            return null;
-        }
+        localStorage.setItem('vanstraSessions', JSON.stringify(sessions));
+        localStorage.setItem('currentSession', token);
         
         return { token };
     }
 
     function getCurrentUser() {
         const sessionToken = localStorage.getItem('currentSession');
-        console.log('🔍 getCurrentUser - SessionToken:', sessionToken ? sessionToken.substring(0, 20) + '...' : 'NONE');
-        
-        if (!sessionToken) {
-            console.log('❌ No session token found');
-            return null;
-        }
+        if (!sessionToken) return null;
 
-        const sessionsData = localStorage.getItem('vanstraSessions');
-        const sessions = sessionsData ? JSON.parse(sessionsData) : {};
+        const sessions = JSON.parse(localStorage.getItem('vanstraSessions'));
         const session = sessions[sessionToken];
         
-        console.log('📍 Session lookup:', session ? `Found, UserID=${session.userId}` : 'NOT FOUND');
-        
-        if (!session) {
-            console.log('❌ Session not in vanstraSessions');
-            localStorage.removeItem('currentSession');
-            return null;
-        }
-        
-        if (new Date(session.expiresAt) < new Date()) {
-            console.log('❌ Session expired:', session.expiresAt);
+        if (!session || new Date(session.expiresAt) < new Date()) {
             localStorage.removeItem('currentSession');
             return null;
         }
 
-        const usersData = localStorage.getItem('vanstraUsers');
-        const users = usersData ? JSON.parse(usersData) : {};
-        const user = users[session.userId];
-        console.log('👤 User lookup:', user ? `Found - ${user.email}` : 'NOT FOUND');
-        
-        return user || null;
+        const users = JSON.parse(localStorage.getItem('vanstraUsers'));
+        return users[session.userId] || null;
     }
 
     function isAuthenticated() {
@@ -538,21 +427,7 @@ const VanstraBank = (function() {
     function requestInternalTransfer(userId, transferData) {
         const users = JSON.parse(localStorage.getItem('vanstraUsers'));
         const sender = users[userId];
-        
-        // Support both recipientId lookup and manual recipient details
-        let recipient = null;
-        
-        if (transferData.recipientId) {
-            // Legacy: lookup by ID
-            recipient = users[transferData.recipientId];
-        } else if (transferData.accountNumber) {
-            // New: lookup by account number
-            const foundUserId = Object.keys(users).find(id => users[id].accountNumber === transferData.accountNumber);
-            if (foundUserId) {
-                recipient = users[foundUserId];
-                transferData.recipientId = foundUserId;
-            }
-        }
+        const recipient = users[transferData.recipientId];
 
         if (!recipient) {
             return { success: false, error: 'Recipient not found' };
@@ -732,7 +607,7 @@ const VanstraBank = (function() {
         }
     }
 
-    // Chat functions removed to disable internal chat feature.
+    // Internal chat support removed.
 
     // ==================== ADMIN FUNCTIONS ====================
 
@@ -766,34 +641,6 @@ const VanstraBank = (function() {
         return Object.values(users).map(sanitizeForAdmin);
     }
 
-    function updateUser(updatedUser) {
-        try {
-            const usersData = localStorage.getItem('vanstraUsers');
-            const users = usersData ? JSON.parse(usersData) : {};
-            
-            if (users[updatedUser.id]) {
-                users[updatedUser.id] = Object.assign({}, users[updatedUser.id], updatedUser);
-                localStorage.setItem('vanstraUsers', JSON.stringify(users));
-                
-                // Sync with Supabase if available
-                if (window.SupabaseDB && window.SupabaseDB.initialized) {
-                    try {
-                        window.SupabaseDB.updateUser(updatedUser.id, updatedUser);
-                    } catch (e) {
-                        console.warn('Failed to sync user update to Supabase', e);
-                    }
-                }
-                
-                // Emit event for real-time updates
-                emit('userUpdated', updatedUser);
-                return { success: true, user: users[updatedUser.id] };
-            }
-            return { success: false, error: 'User not found' };
-        } catch (e) {
-            return { success: false, error: e.message };
-        }
-    }
-
     function getAdminEvents() {
         return JSON.parse(localStorage.getItem('adminEvents') || '[]');
     }
@@ -816,7 +663,7 @@ const VanstraBank = (function() {
             }));
     }
 
-    // adminReply removed along with internal chat support.
+    // adminReply removed.
 
     // ==================== UTILITIES ====================
 
@@ -1021,22 +868,16 @@ const VanstraBank = (function() {
             };
             localStorage.setItem('passwordResetRequests', JSON.stringify(resetRequests));
 
-            // Simulate sending email with reset link.  We always log the link so
-            // that developers/testers can retrieve it if the real mail service
-            // isn't configured or fails.
+            // Simulate sending email with reset link
             const resetLink = `${window.location.origin}/reset-password.html?token=${resetToken}`;
             sendEmail(email, 'Password Reset Request', 
                 `Click the link below to reset your password. This link expires in 1 hour.\n\n${resetLink}\n\nIf you didn't request this, please ignore this email.`
             );
 
-            // also output to console for debugging
-            console.log('[VanstraBank] password reset link for', email, resetLink);
-
             // Log the event
-            emit('password_reset_requested', { email, timestamp: new Date().toISOString(), resetLink });
+            emit('password_reset_requested', { email, timestamp: new Date().toISOString() });
 
-            return { success: true, message: 'If an account with this email exists, a reset link has been sent.', resetLink };
-
+            return { success: true, message: 'If an account with this email exists, a reset link has been sent.' };
         } catch (e) {
             return { success: false, error: e.message };
         }
@@ -1110,137 +951,6 @@ const VanstraBank = (function() {
         }
     }
 
-    // ==================== ACCOUNT SUSPENSION VERIFICATION ====================
-    
-    // Verification codes for suspended/frozen accounts
-    // These are retrieved from admin-set codes stored per user
-    const SUSPENSION_CODES = {
-        COT: '962101',      // Customer Offset Token
-        AFD: '385247',      // Account Freeze Directive
-        SVR: '704856',      // Suspension Verification Request
-        ACE: '521690',      // Account Clearance Encryption
-        FVP: '813429'       // Final Verification Protocol
-    };
-
-    function getAccountSuspensionStatus() {
-        const user = getCurrentUser();
-        console.log('👤 Current User:', user);
-        
-        if (!user) {
-            console.log('❌ No user found!');
-            return { isSuspended: false };
-        }
-        
-        // Check both status and accountStatus for compatibility
-        const isSuspended = user.accountStatus === 'frozen' || user.accountStatus === 'suspended' || user.accountStatus === 'locked' ||
-                          user.status === 'frozen' || user.status === 'suspended' || user.status === 'locked';
-        
-        console.log('🔒 Account Status Check:', {
-            accountStatus: user.accountStatus,
-            status: user.status,
-            isSuspended
-        });
-        
-        return {
-            isSuspended,
-            status: user.accountStatus || user.status,
-            userId: user.id
-        };
-    }
-
-    function initializeSuspensionChallenge(userId) {
-        // Create a new suspension challenge session
-        const challenge = {
-            userId,
-            codesRequired: ['COT', 'AFD', 'SVR', 'ACE', 'FVP'],
-            codesEntered: [],
-            currentStep: 0,
-            startTime: new Date().toISOString(),
-            sessionId: 'SUSP-' + Date.now() + '-' + Math.random().toString(36).substr(2, 6)
-        };
-        
-        // Store in sessionStorage so it persists during the session
-        sessionStorage.setItem('suspensionChallenge', JSON.stringify(challenge));
-        
-        return challenge;
-    }
-
-    function getCurrentSuspensionChallenge() {
-        const challenge = sessionStorage.getItem('suspensionChallenge');
-        return challenge ? JSON.parse(challenge) : null;
-    }
-
-    function verifySuspensionCode(code) {
-        const challenge = getCurrentSuspensionChallenge();
-        if (!challenge) {
-            return { success: false, error: 'No active verification challenge' };
-        }
-
-        const currentCodeRequired = challenge.codesRequired[challenge.currentStep];
-        const expectedCode = SUSPENSION_CODES[currentCodeRequired];
-
-        if (code.trim() !== expectedCode) {
-            return { 
-                success: false, 
-                error: 'Invalid code. Please check your verification letter from admin.',
-                currentStep: challenge.currentStep,
-                totalSteps: challenge.codesRequired.length
-            };
-        }
-
-        // Code is correct
-        challenge.codesEntered.push({
-            code: currentCodeRequired,
-            enteredAt: new Date().toISOString(),
-            verified: true
-        });
-        challenge.currentStep++;
-
-        // Check if all codes have been verified
-        if (challenge.currentStep >= challenge.codesRequired.length) {
-            // All codes verified - unlock the account
-            const users = JSON.parse(localStorage.getItem('vanstraUsers'));
-            const user = users[challenge.userId];
-            if (user) {
-                user.status = 'active';
-                user.suspensionVerifiedAt = new Date().toISOString();
-                users[challenge.userId] = user;
-                localStorage.setItem('vanstraUsers', JSON.stringify(users));
-            }
-            
-            // Clear the challenge
-            sessionStorage.removeItem('suspensionChallenge');
-            
-            emit('account_unsuspended', { userId: challenge.userId, timestamp: new Date().toISOString() });
-            
-            return {
-                success: true,
-                completed: true,
-                message: 'Account verification complete! Your account is now active.',
-                nextStep: null
-            };
-        }
-
-        // Update the challenge
-        sessionStorage.setItem('suspensionChallenge', JSON.stringify(challenge));
-
-        const nextCode = challenge.codesRequired[challenge.currentStep];
-        return {
-            success: true,
-            completed: false,
-            requiresCustomerServiceContact: true,
-            message: `Code verified! Please contact customer service before proceeding.`,
-            currentStep: challenge.currentStep,
-            totalSteps: challenge.codesRequired.length,
-            nextCode,
-            progress: Math.round((challenge.currentStep / challenge.codesRequired.length) * 100)
-        };
-    }
-
-    function clearSuspensionChallenge() {
-        sessionStorage.removeItem('suspensionChallenge');
-    }
-
     // ==================== PUBLIC API ====================
 
     return {
@@ -1277,16 +987,8 @@ const VanstraBank = (function() {
         
         // Admin
         getAllUsers,
-        updateUser,
         getAdminEvents,
         getAvailableUsers,
-        
-        // Account Suspension Verification
-        getAccountSuspensionStatus,
-        initializeSuspensionChallenge,
-        getCurrentSuspensionChallenge,
-        verifySuspensionCode,
-        clearSuspensionChallenge,
         
         // Events
         on,

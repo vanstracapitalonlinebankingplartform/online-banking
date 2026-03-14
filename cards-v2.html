@@ -673,31 +673,9 @@
                 </div>
             </div>
             <label class="switch">
-                <input type="checkbox" checked aria-label="Online Payments">
+                <input type="checkbox" checked aria-label="Allow online payments" aria-label="Enable contactless payments">
                 <span class="slider"></span>
             </label>
-        </div>
-        
-        <div class="setting-item">
-            <div class="setting-info">
-                <div class="setting-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-                <div class="setting-text">
-                    <h4>Contactless</h4>
-                                        <p>Tap to pay</p>
-                                    </div>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" checked aria-label="Contactless">
-                                    <span class="slider"></span>
-                                </label>
-        </div>
-    </section>
-
-    <!-- Add Card Modal -->
     <div id="addCardModal" class="modal-overlay" onclick="if(event.target === this) closeAddCardModal()">
         <div class="modal-sheet">
             <div class="modal-header">
@@ -815,16 +793,8 @@
 
     <script src="bank-core-v2.js"></script>
     <script>
-        // Auto-login demo mode if not authenticated
         if (!VanstraBank.isAuthenticated()) {
-            const users = VanstraBank.getAllUsers();
-            if (users && Object.keys(users).length > 0) {
-                const firstUserId = Object.keys(users)[0];
-                const firstUser = users[firstUserId];
-                VanstraBank.login(firstUser.email, 'Test1234!');
-            } else {
-                window.location.href = 'login.html';
-            }
+            window.location.href = 'login.html';
         }
 
         let isDetailsVisible = false;
@@ -1034,8 +1004,6 @@
         }
     </script>
 
-    <!-- Start of vanstracapital Zendesk Widget script -->
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=246a98ee-fce4-43fb-9f52-9691402e4ca7"> </script>
-<!-- End of vanstracapital Zendesk Widget script -->
+    <!-- Live chat removed -->
 </body>
 </html>

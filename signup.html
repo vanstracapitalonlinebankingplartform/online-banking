@@ -315,8 +315,8 @@
                     <div class="credential-title">Login Password</div>
                     <div class="credential-desc">Used to access your account. Minimum 8 characters.</div>
                     
-                    <div class="form-group">
-                        <input type="password" id="password" class="form-input" placeholder="Create password" aria-label="Create password"
+                    <div class="form-group" style="margin-bottom: 0.75rem;">
+                        <input type="password" id="password" class="form-input" placeholder="Create password" 
                                minlength="8" oninput="checkPasswordStrength()" required>
                         <div class="password-strength" id="passwordStrength">
                             <div class="strength-bar"></div>
@@ -325,8 +325,8 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <input type="password" id="passwordConfirm" class="form-input" placeholder="Confirm password" aria-label="Confirm password" required>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <input type="password" id="passwordConfirm" class="form-input" placeholder="Confirm password" required>
                     </div>
                 </div>
                 
@@ -340,10 +340,10 @@
                     <div class="form-group">
                         <label class="form-label">Create PIN</label>
                         <div class="pin-inputs">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin="1" aria-label="PIN digit 1" oninput="handlePinInput(this, 1)" onkeydown="handlePinKeydown(event, 1)">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin="2" aria-label="PIN digit 2" oninput="handlePinInput(this, 2)" onkeydown="handlePinKeydown(event, 2)">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin="3" aria-label="PIN digit 3" oninput="handlePinInput(this, 3)" onkeydown="handlePinKeydown(event, 3)">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin="4" aria-label="PIN digit 4" oninput="handlePinInput(this, 4)" onkeydown="handlePinKeydown(event, 4)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin="1" oninput="handlePinInput(this, 1)" onkeydown="handlePinKeydown(event, 1)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin="2" oninput="handlePinInput(this, 2)" onkeydown="handlePinKeydown(event, 2)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin="3" oninput="handlePinInput(this, 3)" onkeydown="handlePinKeydown(event, 3)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin="4" oninput="handlePinInput(this, 4)" onkeydown="handlePinKeydown(event, 4)">
                         </div>
                         <input type="hidden" id="pin" required>
                     </div>
@@ -351,10 +351,10 @@
                     <div class="form-group" style="margin-bottom: 0;">
                         <label class="form-label">Confirm PIN</label>
                         <div class="pin-inputs">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="1" aria-label="Confirm PIN digit 1" oninput="handlePinConfirmInput(this, 1)" onkeydown="handlePinConfirmKeydown(event, 1)">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="2" aria-label="Confirm PIN digit 2" oninput="handlePinConfirmInput(this, 2)" onkeydown="handlePinConfirmKeydown(event, 2)">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="3" aria-label="Confirm PIN digit 3" oninput="handlePinConfirmInput(this, 3)" onkeydown="handlePinConfirmKeydown(event, 3)">
-                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="4" aria-label="Confirm PIN digit 4" oninput="handlePinConfirmInput(this, 4)" onkeydown="handlePinConfirmKeydown(event, 4)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="1" oninput="handlePinConfirmInput(this, 1)" onkeydown="handlePinConfirmKeydown(event, 1)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="2" oninput="handlePinConfirmInput(this, 2)" onkeydown="handlePinConfirmKeydown(event, 2)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="3" oninput="handlePinConfirmInput(this, 3)" onkeydown="handlePinConfirmKeydown(event, 3)">
+                            <input type="password" class="pin-digit" maxlength="1" data-pin-confirm="4" oninput="handlePinConfirmInput(this, 4)" onkeydown="handlePinConfirmKeydown(event, 4)">
                         </div>
                         <input type="hidden" id="pinConfirm" required>
                     </div>
@@ -458,10 +458,10 @@
             const email = document.getElementById('email').value.trim();
             const dateOfBirth = document.getElementById('dob').value;
             const phone = document.getElementById('phone').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const passwordConfirm = document.getElementById('passwordConfirm').value.trim();
-            const pin = document.getElementById('pin').value.trim();
-            const pinConfirm = document.getElementById('pinConfirm').value.trim();
+            const password = document.getElementById('password').value;
+            const passwordConfirm = document.getElementById('passwordConfirm').value;
+            const pin = document.getElementById('pin').value;
+            const pinConfirm = document.getElementById('pinConfirm').value;
             
             // Validation
             if (password !== passwordConfirm) {

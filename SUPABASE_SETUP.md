@@ -53,8 +53,8 @@ create table if not exists sent_emails (
 Example `supabase-config.js`:
 
 window.SUPABASE_CONFIG = {
-  url: 'https://hrxvltgubtxprggobhls.supabase.co',
-  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhyeHZsdGd1YnR4cHJnZ29iaGxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1OTU5NjksImV4cCI6MjA4NjE3MTk2OX0.ao0by0GAUnuPSdIutcaBv51UZHRhL4jTURhOMKAwJcQ'
+  url: 'https://your-project-ref.supabase.co',
+  key: 'public-anon-key'
 };
 
 // Optionally initialize immediately if you prefer

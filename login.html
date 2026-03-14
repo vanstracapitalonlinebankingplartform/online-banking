@@ -39,22 +39,11 @@
         .pin-notice { background:#FEF3C7; border:1px solid #FCD34D; border-radius:10px; padding:0.875rem 1rem; margin-bottom:1rem; display:flex; align-items:flex-start; gap:0.75rem; }
         .pin-notice-icon { color:#D97706; flex-shrink:0; margin-top:0.125rem; }
         .pin-notice-text { font-size:13px; color:#92400E; line-height:1.5; }
-        
-        /* styles for forgot password modal adjustments */
-        #forgotModal { z-index: 1000; }
-        #forgotModalSuccess { background:#D1FAE5; border-color:#A7F3D0; color:#065F46; }
-        #forgotModalBtn { width:auto; flex:1; }
-        
         @media (max-width:480px){ .login-card{padding:1.5rem;} .logo-img{width:56px;height:56px;} }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <a href="index.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-6 w-fit">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            <span class="text-sm font-medium">Back to Home</span>
-        </a>
-
         <div class="logo-section">
             <img src="logo-v.png" alt="Vanstra Bank" class="logo-img">
             <h1 class="text-white text-2xl font-bold mb-1">Vanstra Bank</h1>
@@ -100,7 +89,7 @@
     </div>
 
     <!-- Hidden Forgot Password Modal -->
-    <div id="forgotModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden">
+    <div id="forgotModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden" style="z-index:1000;">
         <div class="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-900">Reset Password</h3>
@@ -108,7 +97,7 @@
             </div>
 
             <div id="forgotModalError" class="error-message"></div>
-            <div id="forgotModalSuccess" class="error-message"></div>
+            <div id="forgotModalSuccess" class="error-message" style="background:#D1FAE5;border-color:#A7F3D0;color:#065F46;"></div>
 
             <form id="forgotModalForm" onsubmit="handleForgotPassword(event)">
                 <div class="form-group">
@@ -117,7 +106,7 @@
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <button type="submit" id="forgotModalBtn" class="btn-primary">Send Reset Link</button>
+                    <button type="submit" id="forgotModalBtn" class="btn-primary" style="width:auto;flex:1;">Send Reset Link</button>
                     <button type="button" class="btn-secondary" onclick="closeForgotModal()">Cancel</button>
                 </div>
             </form>
@@ -126,42 +115,27 @@
 
     <script src="bank-core-v2.js"></script>
     <script>
-        // Keep user on login form - don't auto-redirect
-        // if (window.VanstraBank && VanstraBank.isAuthenticated()) {
-        //     window.location.href = 'dashboard-v2.html';
-        // }
+        if (window.VanstraBank && VanstraBank.isAuthenticated()) {
+            window.location.href = 'dashboard-v2.html';
+        }
 
         function handleLogin(event) {
             event.preventDefault();
             const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value.trim();
+            const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
             const errorMsg = document.getElementById('errorMessage');
 
-            console.log('📝 LOGIN FORM SUBMITTED:', {email});
             loginBtn.disabled = true;
             loginBtn.textContent = 'Signing in...';
             errorMsg.classList.remove('show');
 
             setTimeout(() => {
-                console.log('🔐 Calling VanstraBank.login()');
                 const result = VanstraBank.login(email, password);
-                console.log('📋 Login result:', {success: result.success, hasSessionToken: !!result.sessionToken});
-                
                 if (result.success) {
-                    console.log('✅ Login successful, setting currentSession');
                     localStorage.setItem('currentSession', result.sessionToken);
-                    console.log('💾 currentSession saved:', result.sessionToken.substring(0, 20) + '...');
-                    
-                    // Verify it was saved
-                    const verify = localStorage.getItem('currentSession');
-                    console.log('✓ Verification: currentSession in localStorage:', verify ? 'YES' : 'NO');
-                    
-                    // Redirect to dashboard
-                    console.log('🚀 Redirecting to dashboard...');
                     window.location.href = 'dashboard-v2.html';
                 } else {
-                    console.log('❌ Login failed:', result.error);
                     errorMsg.textContent = result.error;
                     errorMsg.classList.add('show');
                     loginBtn.disabled = false;
@@ -201,14 +175,7 @@
             setTimeout(() => {
                 const result = VanstraBank.requestPasswordReset(email);
                 if (result.success) {
-                    if (successMsg) {
-                        successMsg.textContent = result.message;
-                        // if the link is available (dev mode), show it directly
-                        if (result.resetLink) {
-                            successMsg.textContent += '\n' + result.resetLink;
-                        }
-                        successMsg.classList.add('show');
-                    }
+                    if (successMsg) { successMsg.textContent = result.message; successMsg.classList.add('show'); }
                     setTimeout(() => { closeForgotModal(); }, 2500);
                 } else {
                     if (errorMsg) { errorMsg.textContent = result.error; errorMsg.classList.add('show'); }
