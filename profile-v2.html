@@ -768,32 +768,321 @@
     </div>
 
     <!-- Language & Currency Settings Modal -->
-    <div id="languageCurrencyModal" class="modal-overlay">
-        <div class="modal">
+    <div id="languageCurrencyModal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'languageCurrencyModal')">
+        <div class="modal-sheet">
             <div class="modal-header">
                 <h3 class="modal-title">Language & Currency</h3>
-                <button class="modal-close" onclick="closeLanguageCurrencySettings()">×</button>
+                <button class="modal-close" onclick="closeModal('languageCurrencyModal')">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
             </div>
             <div class="modal-body">
                 <form id="languageCurrencyForm">
                     <div class="form-group">
                         <label for="languageSelect" class="form-label">Language</label>
                         <select id="languageSelect" class="form-select">
-                            <option value="en">English</option>
-                            <option value="es">Español</option>
-                            <option value="fr">Français</option>
-                            <option value="de">Deutsch</option>
-                            <option value="it">Italiano</option>
+                            <!-- North America -->
+                            <optgroup label="🌎 North America">
+                                <option value="en">English (United States)</option>
+                                <option value="en-CA">English (Canada)</option>
+                                <option value="fr-CA">Français (Canada)</option>
+                                <option value="es-MX">Español (México)</option>
+                                <option value="es">Español (Puerto Rico)</option>
+                                <option value="es-CU">Español (Cuba)</option>
+                                <option value="es-DO">Español (República Dominicana)</option>
+                                <option value="es-GT">Español (Guatemala)</option>
+                                <option value="es-HN">Español (Honduras)</option>
+                                <option value="es-NI">Español (Nicaragua)</option>
+                                <option value="es-PA">Español (Panamá)</option>
+                                <option value="es-SV">Español (El Salvador)</option>
+                                <option value="es-CR">Español (Costa Rica)</option>
+                                <option value="es-BZ">Español (Belize)</option>
+                                <option value="es-HT">Kreyòl Ayisyen (Haiti)</option>
+                                <option value="es-JM">English (Jamaica)</option>
+                                <option value="es-BS">English (Bahamas)</option>
+                                <option value="es-BB">English (Barbados)</option>
+                                <option value="es-TT">English (Trinidad and Tobago)</option>
+                                <option value="es-GY">English (Guyana)</option>
+                                <option value="es-SR">Nederlands (Suriname)</option>
+                                <option value="es-AW">Nederlands (Aruba)</option>
+                                <option value="es-CW">Nederlands (Curaçao)</option>
+                                <option value="es-BQ">Nederlands (Bonaire)</option>
+                                <option value="es-SX">Nederlands (Sint Maarten)</option>
+                            </optgroup>
+                            
+                            <!-- South America -->
+                            <optgroup label="🌎 South America">
+                                <option value="es-BR">Português (Brasil)</option>
+                                <option value="es-AR">Español (Argentina)</option>
+                                <option value="es-CO">Español (Colombia)</option>
+                                <option value="es-PE">Español (Perú)</option>
+                                <option value="es-VE">Español (Venezuela)</option>
+                                <option value="es-CL">Español (Chile)</option>
+                                <option value="es-EC">Español (Ecuador)</option>
+                                <option value="es-BO">Español (Bolivia)</option>
+                                <option value="es-PY">Español (Paraguay)</option>
+                                <option value="es-UY">Español (Uruguay)</option>
+                                <option value="es-GF">Français (Guyane Française)</option>
+                            </optgroup>
+                            
+                            <!-- Europe -->
+                            <optgroup label="🌍 Europe">
+                                <option value="en-GB">English (United Kingdom)</option>
+                                <option value="en-IE">English (Ireland)</option>
+                                <option value="de">Deutsch (Deutschland)</option>
+                                <option value="de-AT">Deutsch (Österreich)</option>
+                                <option value="de-CH">Deutsch (Schweiz)</option>
+                                <option value="de-LU">Deutsch (Luxembourg)</option>
+                                <option value="de-BE">Deutsch (Belgien)</option>
+                                <option value="fr">Français (France)</option>
+                                <option value="fr-BE">Français (Belgique)</option>
+                                <option value="fr-CH">Français (Suisse)</option>
+                                <option value="fr-LU">Français (Luxembourg)</option>
+                                <option value="fr-MC">Français (Monaco)</option>
+                                <option value="it">Italiano (Italia)</option>
+                                <option value="it-CH">Italiano (Svizzera)</option>
+                                <option value="es-ES">Español (España)</option>
+                                <option value="pt">Português (Portugal)</option>
+                                <option value="pt-CH">Português (Suiça)</option>
+                                <option value="nl">Nederlands (Nederland)</option>
+                                <option value="nl-BE">Nederlands (België)</option>
+                                <option value="da">Dansk (Danmark)</option>
+                                <option value="sv">Svenska (Sverige)</option>
+                                <option value="no">Norsk (Norge)</option>
+                                <option value="fi">Suomi (Suomi)</option>
+                                <option value="is">Íslenska (Ísland)</option>
+                                <option value="fo">Føroyskt (Føroyar)</option>
+                                <option value="kl">Kalaallisut (Kalaallit Nunaat)</option>
+                                <option value="pl">Polski (Polska)</option>
+                                <option value="cs">Čeština (Česká republika)</option>
+                                <option value="sk">Slovenčina (Slovensko)</option>
+                                <option value="sl">Slovenščina (Slovenija)</option>
+                                <option value="hr">Hrvatski (Hrvatska)</option>
+                                <option value="bs">Bosanski (Bosna i Hercegovina)</option>
+                                <option value="sr">Српски (Србија)</option>
+                                <option value="mk">Македонски (Македонија)</option>
+                                <option value="sq">Shqip (Shqipëria)</option>
+                                <option value="el">Ελληνικά (Ελλάδα)</option>
+                                <option value="bg">Български (България)</option>
+                                <option value="ro">Română (România)</option>
+                                <option value="hu">Magyar (Magyarország)</option>
+                                <option value="tr">Türkçe (Türkiye)</option>
+                                <option value="et">Eesti (Eesti)</option>
+                                <option value="lv">Latviešu (Latvija)</option>
+                                <option value="lt">Lietuvių (Lietuva)</option>
+                                <option value="mt">Malti (Malta)</option>
+                                <option value="ga">Gaeilge (Éire)</option>
+                                <option value="cy">Cymraeg (Cymru)</option>
+                                <option value="gd">Gàidhlig (Alba)</option>
+                                <option value="kw">Kernewek (Kernow)</option>
+                                <option value="br">Brezhoneg (Breizh)</option>
+                                <option value="co">Corsu (Corsica)</option>
+                                <option value="eu">Euskera (Euskadi)</option>
+                                <option value="ca">Català (Catalunya)</option>
+                                <option value="gl">Galego (Galicia)</option>
+                                <option value="oc">Occitan (Occitània)</option>
+                                <option value="an">Aragonés (Aragón)</option>
+                                <option value="ast">Asturianu (Asturies)</option>
+                                <option value="be">Беларуская (Беларусь)</option>
+                                <option value="uk">Українська (Україна)</option>
+                                <option value="ru">Русский (Россия)</option>
+                                <option value="hy">Հայերեն (Հայաստան)</option>
+                                <option value="ka">ქართული (საქართველო)</option>
+                                <option value="az">Azərbaycan (Azərbaycan)</option>
+                                <option value="kk">Қазақша (Қазақстан)</option>
+                                <option value="ky">Кыргызча (Кыргызстан)</option>
+                                <option value="tg">Тоҷикӣ (Тоҷикистон)</option>
+                                <option value="tk">Türkmençe (Türkmenistan)</option>
+                                <option value="uz">O'zbekcha (O'zbekiston)</option>
+                            </optgroup>
+                            
+                            <!-- Africa -->
+                            <optgroup label="🌍 Africa">
+                                <option value="ar-EG">العربية (مصر)</option>
+                                <option value="ar-MA">العربية (المغرب)</option>
+                                <option value="ar-TN">العربية (تونس)</option>
+                                <option value="ar-DZ">العربية (الجزائر)</option>
+                                <option value="ar-LY">العربية (ليبيا)</option>
+                                <option value="ar-SD">العربية (السودان)</option>
+                                <option value="ar-SO">العربية (الصومال)</option>
+                                <option value="ar-IQ">العربية (العراق)</option>
+                                <option value="ar-JO">العربية (الأردن)</option>
+                                <option value="ar-LB">العربية (لبنان)</option>
+                                <option value="ar-SY">العربية (سوريا)</option>
+                                <option value="ar-YE">العربية (اليمن)</option>
+                                <option value="ar-AE">العربية (الإمارات العربية المتحدة)</option>
+                                <option value="ar-SA">العربية (المملكة العربية السعودية)</option>
+                                <option value="ar-KW">العربية (الكويت)</option>
+                                <option value="ar-BH">العربية (البحرين)</option>
+                                <option value="ar-QA">العربية (قطر)</option>
+                                <option value="ar-OM">العربية (عمان)</option>
+                                <option value="sw">Kiswahili (Tanzania)</option>
+                                <option value="sw-KE">Kiswahili (Kenya)</option>
+                                <option value="am">አማርኛ (ኢትዮጵያ)</option>
+                                <option value="ti">ትግርኛ (ኢትዮጵያ)</option>
+                                <option value="om">Oromoo (Oromia)</option>
+                                <option value="so">Soomaali (Soomaaliya)</option>
+                                <option value="aa">Afar (Djibouti)</option>
+                                <option value="ha">Hausa (Nigeria)</option>
+                                <option value="yo">Yorùbá (Nigeria)</option>
+                                <option value="ig">Igbo (Nigeria)</option>
+                                <option value="ff">Pulaar (Senegal)</option>
+                                <option value="bm">Bamanankan (Mali)</option>
+                                <option value="sn">chiShona (Zimbabwe)</option>
+                                <option value="zu">isiZulu (South Africa)</option>
+                                <option value="xh">isiXhosa (South Africa)</option>
+                                <option value="af">Afrikaans (South Africa)</option>
+                                <option value="st">Sesotho (South Africa)</option>
+                                <option value="tn">Setswana (Botswana)</option>
+                                <option value="ve">Tshivenda (South Africa)</option>
+                                <option value="ts">Xitsonga (South Africa)</option>
+                                <option value="nr">isiNdebele (South Africa)</option>
+                                <option value="ss">siSwati (Swaziland)</option>
+                                <option value="hi">हिन्दी (Mauritius)</option>
+                                <option value="ta">தமிழ் (Mauritius)</option>
+                                <option value="te">తెలుగు (Mauritius)</option>
+                                <option value="ur">اردو (Mauritius)</option>
+                                <option value="mg">Malagasy (Madagascar)</option>
+                                <option value="rn">Kirundi (Burundi)</option>
+                                <option value="rw">Kinyarwanda (Rwanda)</option>
+                                <option value="kg">Kikongo (Congo)</option>
+                                <option value="ln">Lingala (Congo)</option>
+                                <option value="lu">Tshiluba (Congo)</option>
+                                <option value="fr-CD">Français (Congo)</option>
+                                <option value="pt-AO">Português (Angola)</option>
+                                <option value="pt-MZ">Português (Moçambique)</option>
+                                <option value="pt-GW">Português (Guiné-Bissau)</option>
+                                <option value="pt-ST">Português (São Tomé e Príncipe)</option>
+                                <option value="pt-CV">Português (Cabo Verde)</option>
+                            </optgroup>
+                            
+                            <!-- Asia -->
+                            <optgroup label="🌏 Asia">
+                                <option value="zh-CN">中文 (中国)</option>
+                                <option value="zh-TW">中文 (台灣)</option>
+                                <option value="zh-HK">中文 (香港)</option>
+                                <option value="zh-SG">中文 (新加坡)</option>
+                                <option value="zh-MO">中文 (澳門)</option>
+                                <option value="ja">日本語 (日本)</option>
+                                <option value="ko">한국어 (대한민국)</option>
+                                <option value="vi">Tiếng Việt (Việt Nam)</option>
+                                <option value="th">ไทย (ประเทศไทย)</option>
+                                <option value="id">Bahasa Indonesia (Indonesia)</option>
+                                <option value="ms">Bahasa Melayu (Malaysia)</option>
+                                <option value="tl">Filipino (Pilipinas)</option>
+                                <option value="hi">हिन्दी (भारत)</option>
+                                <option value="bn">বাংলা (বাংলাদেশ)</option>
+                                <option value="ur">اردو (پاکستان)</option>
+                                <option value="pa">ਪੰਜਾਬੀ (ਭਾਰਤ)</option>
+                                <option value="gu">ગુજરાતી (ભારત)</option>
+                                <option value="mr">मराठी (भारत)</option>
+                                <option value="ta">தமிழ் (இந்தியா)</option>
+                                <option value="te">తెలుగు (భారతదేశం)</option>
+                                <option value="kn">ಕನ್ನಡ (ಭಾರತ)</option>
+                                <option value="ml">മലയാളം (ഇന്ത്യ)</option>
+                                <option value="si">සිංහල (ශ්‍රී ලංකාව)</option>
+                                <option value="ne">नेपाली (नेपाल)</option>
+                                <option value="my">မြန်မာဘာသာ (မြန်မာ)</option>
+                                <option value="km">ភាសាខ្មែរ (កម្ពុជា)</option>
+                                <option value="lo">ພາສາລາວ (ລາວ)</option>
+                                <option value="mn">Монгол (Монгол улс)</option>
+                                <option value="bo">བོད་ཡིག (བོད།)</option>
+                                <option value="dz">རྫོང་ཁ (འབྲུག)</option>
+                                <option value="fa">فارسی (ایران)</option>
+                                <option value="ar-IR">العربية (إيران)</option>
+                                <option value="ku">کوردی (کوردستان)</option>
+                                <option value="ps">پښتو (افغانستان)</option>
+                                <option value="ug">ئۇيغۇرچە (ئۇيغۇرستان)</option>
+                                <option value="he">עברית (ישראל)</option>
+                                <option value="yi">ייִדיש (ישראל)</option>
+                                <option value="ar-IL">العربية (إسرائيل)</option>
+                                <option value="ka">ქართული (საქართველო)</option>
+                                <option value="hy">Հայերեն (Հայաստան)</option>
+                                <option value="az">Azərbaycan (Azərbaycan)</option>
+                                <option value="kk">Қазақша (Қазақстан)</option>
+                                <option value="ky">Кыргызча (Кыргызстан)</option>
+                                <option value="tg">Тоҷикӣ (Тоҷикистон)</option>
+                                <option value="tk">Türkmençe (Türkmenistan)</option>
+                                <option value="uz">O'zbekcha (O'zbekiston)</option>
+                            </optgroup>
+                            
+                            <!-- Oceania -->
+                            <optgroup label="🌏 Oceania">
+                                <option value="en-AU">English (Australia)</option>
+                                <option value="en-NZ">English (New Zealand)</option>
+                                <option value="en-PG">English (Papua New Guinea)</option>
+                                <option value="en-SB">English (Solomon Islands)</option>
+                                <option value="en-VU">English (Vanuatu)</option>
+                                <option value="en-FJ">English (Fiji)</option>
+                                <option value="en-WS">English (Samoa)</option>
+                                <option value="en-TO">English (Tonga)</option>
+                                <option value="en-KI">English (Kiribati)</option>
+                                <option value="en-NR">English (Nauru)</option>
+                                <option value="en-TV">English (Tuvalu)</option>
+                                <option value="en-PW">English (Palau)</option>
+                                <option value="en-FM">English (Micronesia)</option>
+                                <option value="en-MH">English (Marshall Islands)</option>
+                                <option value="mi">Māori (Aotearoa)</option>
+                                <option value="haw">ʻŌlelo Hawaiʻi (Hawaiʻi)</option>
+                                <option value="sm">Gagana Sāmoa (Sāmoa)</option>
+                                <option value="to">Faka Tonga (Tonga)</option>
+                                <option value="fj">Na Vosa Vakaviti (Fiji)</option>
+                                <option value="bi">Bislama (Vanuatu)</option>
+                                <option value="tpi">Tok Pisin (Papua New Guinea)</option>
+                                <option value="ho">Hiri Motu (Papua New Guinea)</option>
+                            </optgroup>
                         </select>
+                        <div style="font-size: 12px; color: #6B7280; margin-top: 0.5rem;">
+                            Note: Language selection affects date/currency formatting. Full UI translation requires page refresh.
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="currencySelect" class="form-label">Currency</label>
                         <select id="currencySelect" class="form-select">
-                            <option value="EUR">EUR (€)</option>
-                            <option value="USD">USD ($)</option>
-                            <option value="GBP">GBP (£)</option>
-                            <option value="JPY">JPY (¥)</option>
-                            <option value="CAD">CAD (C$)</option>
+                            <option value="EUR">EUR (€) - Euro</option>
+                            <option value="USD">USD ($) - US Dollar</option>
+                            <option value="GBP">GBP (£) - British Pound</option>
+                            <option value="JPY">JPY (¥) - Japanese Yen</option>
+                            <option value="CAD">CAD (C$) - Canadian Dollar</option>
+                            <option value="AUD">AUD (A$) - Australian Dollar</option>
+                            <option value="CHF">CHF (Fr) - Swiss Franc</option>
+                            <option value="CNY">CNY (¥) - Chinese Yuan</option>
+                            <option value="SEK">SEK (kr) - Swedish Krona</option>
+                            <option value="NZD">NZD (NZ$) - New Zealand Dollar</option>
+                            <option value="MXN">MXN ($) - Mexican Peso</option>
+                            <option value="SGD">SGD (S$) - Singapore Dollar</option>
+                            <option value="HKD">HKD (HK$) - Hong Kong Dollar</option>
+                            <option value="NOK">NOK (kr) - Norwegian Krone</option>
+                            <option value="KRW">KRW (₩) - South Korean Won</option>
+                            <option value="TRY">TRY (₺) - Turkish Lira</option>
+                            <option value="RUB">RUB (₽) - Russian Ruble</option>
+                            <option value="INR">INR (₹) - Indian Rupee</option>
+                            <option value="BRL">BRL (R$) - Brazilian Real</option>
+                            <option value="ZAR">ZAR (R) - South African Rand</option>
+                            <option value="AED">AED (د.إ) - UAE Dirham</option>
+                            <option value="SAR">SAR (﷼) - Saudi Riyal</option>
+                            <option value="THB">THB (฿) - Thai Baht</option>
+                            <option value="MYR">MYR (RM) - Malaysian Ringgit</option>
+                            <option value="IDR">IDR (Rp) - Indonesian Rupiah</option>
+                            <option value="PHP">PHP (₱) - Philippine Peso</option>
+                            <option value="CZK">CZK (Kč) - Czech Koruna</option>
+                            <option value="PLN">PLN (zł) - Polish Złoty</option>
+                            <option value="HUF">HUF (Ft) - Hungarian Forint</option>
+                            <option value="DKK">DKK (kr) - Danish Krone</option>
+                            <option value="ILS">ILS (₪) - Israeli Shekel</option>
+                            <option value="EGP">EGP (£) - Egyptian Pound</option>
+                            <option value="VND">VND (₫) - Vietnamese Dong</option>
+                            <option value="PKR">PKR (₨) - Pakistani Rupee</option>
+                            <option value="BDT">BDT (৳) - Bangladeshi Taka</option>
+                            <option value="NGN">NGN (₦) - Nigerian Naira</option>
+                            <option value="KES">KES (KSh) - Kenyan Shilling</option>
+                            <option value="GHS">GHS (₵) - Ghanaian Cedi</option>
+                            <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+                            <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+                            <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
+                            <option value="XOF">XOF (CFA) - West African CFA Franc</option>
                         </select>
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Save Preferences</button>
@@ -918,9 +1207,544 @@
 
         let currentUser = null;
 
+        // Translation system
+        const translations = {
+            en: {
+                // Navigation
+                home: "Home",
+                profile: "Profile",
+                // Settings
+                settings: "Settings",
+                security: "Security",
+                notifications: "Notifications",
+                languageCurrency: "Language & Currency",
+                // Profile sections
+                personalInfo: "Personal Information",
+                accountInfo: "Account Information",
+                preferences: "Preferences",
+                // Form labels
+                fullName: "Full Name",
+                email: "Email Address",
+                phone: "Phone Number",
+                dateOfBirth: "Date of Birth",
+                accountNumber: "Account Number",
+                accountType: "Account Type",
+                balance: "Balance",
+                language: "Language",
+                currency: "Currency",
+                // Buttons
+                saveChanges: "Save Changes",
+                savePreferences: "Save Preferences",
+                uploadPhoto: "Upload Photo",
+                removePhoto: "Remove Photo",
+                logOut: "Log Out",
+                // Modal titles
+                profilePhoto: "Profile Photo",
+                securitySettings: "Security Settings",
+                notificationSettings: "Notification Settings",
+                languageCurrencyTitle: "Language & Currency",
+                // Security
+                currentPassword: "Current Password",
+                newPassword: "New Password",
+                confirmPassword: "Confirm Password",
+                newPin: "New PIN",
+                // Notifications
+                pushNotifications: "Push Notifications",
+                emailAlerts: "Email Alerts",
+                smsAlerts: "SMS Alerts",
+                receiveAlerts: "Receive alerts on your device",
+                importantUpdates: "Important account updates via email",
+                transactionConfirmations: "Transaction confirmations via SMS"
+            },
+            es: {
+                home: "Inicio",
+                profile: "Perfil",
+                settings: "Configuración",
+                security: "Seguridad",
+                notifications: "Notificaciones",
+                languageCurrency: "Idioma y Moneda",
+                personalInfo: "Información Personal",
+                accountInfo: "Información de Cuenta",
+                preferences: "Preferencias",
+                fullName: "Nombre Completo",
+                email: "Correo Electrónico",
+                phone: "Número de Teléfono",
+                dateOfBirth: "Fecha de Nacimiento",
+                accountNumber: "Número de Cuenta",
+                accountType: "Tipo de Cuenta",
+                balance: "Saldo",
+                language: "Idioma",
+                currency: "Moneda",
+                saveChanges: "Guardar Cambios",
+                savePreferences: "Guardar Preferencias",
+                uploadPhoto: "Subir Foto",
+                removePhoto: "Eliminar Foto",
+                logOut: "Cerrar Sesión",
+                profilePhoto: "Foto de Perfil",
+                securitySettings: "Configuración de Seguridad",
+                notificationSettings: "Configuración de Notificaciones",
+                languageCurrencyTitle: "Idioma y Moneda",
+                currentPassword: "Contraseña Actual",
+                newPassword: "Nueva Contraseña",
+                confirmPassword: "Confirmar Contraseña",
+                newPin: "Nuevo PIN",
+                pushNotifications: "Notificaciones Push",
+                emailAlerts: "Alertas por Email",
+                smsAlerts: "Alertas por SMS",
+                receiveAlerts: "Recibir alertas en tu dispositivo",
+                importantUpdates: "Actualizaciones importantes de cuenta por email",
+                transactionConfirmations: "Confirmaciones de transacción por SMS"
+            },
+            fr: {
+                home: "Accueil",
+                profile: "Profil",
+                settings: "Paramètres",
+                security: "Sécurité",
+                notifications: "Notifications",
+                languageCurrency: "Langue et Devise",
+                personalInfo: "Informations Personnelles",
+                accountInfo: "Informations de Compte",
+                preferences: "Préférences",
+                fullName: "Nom Complet",
+                email: "Adresse Email",
+                phone: "Numéro de Téléphone",
+                dateOfBirth: "Date de Naissance",
+                accountNumber: "Numéro de Compte",
+                accountType: "Type de Compte",
+                balance: "Solde",
+                language: "Langue",
+                currency: "Devise",
+                saveChanges: "Sauvegarder",
+                savePreferences: "Sauvegarder Préférences",
+                uploadPhoto: "Télécharger Photo",
+                removePhoto: "Supprimer Photo",
+                logOut: "Se Déconnecter",
+                profilePhoto: "Photo de Profil",
+                securitySettings: "Paramètres de Sécurité",
+                notificationSettings: "Paramètres de Notifications",
+                languageCurrencyTitle: "Langue et Devise",
+                currentPassword: "Mot de Passe Actuel",
+                newPassword: "Nouveau Mot de Passe",
+                confirmPassword: "Confirmer Mot de Passe",
+                newPin: "Nouveau PIN",
+                pushNotifications: "Notifications Push",
+                emailAlerts: "Alertes Email",
+                smsAlerts: "Alertes SMS",
+                receiveAlerts: "Recevoir des alertes sur votre appareil",
+                importantUpdates: "Mises à jour importantes du compte par email",
+                transactionConfirmations: "Confirmations de transaction par SMS"
+            },
+            de: {
+                home: "Startseite",
+                profile: "Profil",
+                settings: "Einstellungen",
+                security: "Sicherheit",
+                notifications: "Benachrichtigungen",
+                languageCurrency: "Sprache und Währung",
+                personalInfo: "Persönliche Informationen",
+                accountInfo: "Kontoinformationen",
+                preferences: "Einstellungen",
+                fullName: "Vollständiger Name",
+                email: "E-Mail-Adresse",
+                phone: "Telefonnummer",
+                dateOfBirth: "Geburtsdatum",
+                accountNumber: "Kontonummer",
+                accountType: "Kontotyp",
+                balance: "Kontostand",
+                language: "Sprache",
+                currency: "Währung",
+                saveChanges: "Änderungen Speichern",
+                savePreferences: "Einstellungen Speichern",
+                uploadPhoto: "Foto Hochladen",
+                removePhoto: "Foto Entfernen",
+                logOut: "Abmelden",
+                profilePhoto: "Profilfoto",
+                securitySettings: "Sicherheitseinstellungen",
+                notificationSettings: "Benachrichtigungseinstellungen",
+                languageCurrencyTitle: "Sprache und Währung",
+                currentPassword: "Aktuelles Passwort",
+                newPassword: "Neues Passwort",
+                confirmPassword: "Passwort Bestätigen",
+                newPin: "Neuer PIN",
+                pushNotifications: "Push-Benachrichtigungen",
+                emailAlerts: "E-Mail-Benachrichtigungen",
+                smsAlerts: "SMS-Benachrichtigungen",
+                receiveAlerts: "Benachrichtigungen auf Ihrem Gerät erhalten",
+                importantUpdates: "Wichtige Kontoaktualisierungen per E-Mail",
+                transactionConfirmations: "Transaktionsbestätigungen per SMS"
+            },
+            pt: {
+                home: "Início",
+                profile: "Perfil",
+                settings: "Configurações",
+                security: "Segurança",
+                notifications: "Notificações",
+                languageCurrency: "Idioma e Moeda",
+                personalInfo: "Informações Pessoais",
+                accountInfo: "Informações da Conta",
+                preferences: "Preferências",
+                fullName: "Nome Completo",
+                email: "Endereço de Email",
+                phone: "Número de Telefone",
+                dateOfBirth: "Data de Nascimento",
+                accountNumber: "Número da Conta",
+                accountType: "Tipo de Conta",
+                balance: "Saldo",
+                language: "Idioma",
+                currency: "Moeda",
+                saveChanges: "Salvar Alterações",
+                savePreferences: "Salvar Preferências",
+                uploadPhoto: "Carregar Foto",
+                removePhoto: "Remover Foto",
+                logOut: "Sair",
+                profilePhoto: "Foto do Perfil",
+                securitySettings: "Configurações de Segurança",
+                notificationSettings: "Configurações de Notificação",
+                languageCurrencyTitle: "Idioma e Moeda",
+                currentPassword: "Senha Atual",
+                newPassword: "Nova Senha",
+                confirmPassword: "Confirmar Senha",
+                newPin: "Novo PIN",
+                pushNotifications: "Notificações Push",
+                emailAlerts: "Alertas por Email",
+                smsAlerts: "Alertas por SMS",
+                receiveAlerts: "Receber alertas no seu dispositivo",
+                importantUpdates: "Atualizações importantes da conta por email",
+                transactionConfirmations: "Confirmações de transação por SMS"
+            },
+            it: {
+                home: "Home",
+                profile: "Profilo",
+                settings: "Impostazioni",
+                security: "Sicurezza",
+                notifications: "Notifiche",
+                languageCurrency: "Lingua e Valuta",
+                personalInfo: "Informazioni Personali",
+                accountInfo: "Informazioni Account",
+                preferences: "Preferenze",
+                fullName: "Nome Completo",
+                email: "Indirizzo Email",
+                phone: "Numero di Telefono",
+                dateOfBirth: "Data di Nascita",
+                accountNumber: "Numero Account",
+                accountType: "Tipo Account",
+                balance: "Saldo",
+                language: "Lingua",
+                currency: "Valuta",
+                saveChanges: "Salva Modifiche",
+                savePreferences: "Salva Preferenze",
+                uploadPhoto: "Carica Foto",
+                removePhoto: "Rimuovi Foto",
+                logOut: "Esci",
+                profilePhoto: "Foto Profilo",
+                securitySettings: "Impostazioni Sicurezza",
+                notificationSettings: "Impostazioni Notifiche",
+                languageCurrencyTitle: "Lingua e Valuta",
+                currentPassword: "Password Attuale",
+                newPassword: "Nuova Password",
+                confirmPassword: "Conferma Password",
+                newPin: "Nuovo PIN",
+                pushNotifications: "Notifiche Push",
+                emailAlerts: "Avvisi Email",
+                smsAlerts: "Avvisi SMS",
+                receiveAlerts: "Ricevi avvisi sul tuo dispositivo",
+                importantUpdates: "Aggiornamenti importanti account via email",
+                transactionConfirmations: "Conferme transazione via SMS"
+            },
+            ru: {
+                home: "Главная",
+                profile: "Профиль",
+                settings: "Настройки",
+                security: "Безопасность",
+                notifications: "Уведомления",
+                languageCurrency: "Язык и Валюта",
+                personalInfo: "Личная Информация",
+                accountInfo: "Информация об Аккаунте",
+                preferences: "Предпочтения",
+                fullName: "Полное Имя",
+                email: "Адрес Электронной Почты",
+                phone: "Номер Телефона",
+                dateOfBirth: "Дата Рождения",
+                accountNumber: "Номер Аккаунта",
+                accountType: "Тип Аккаунта",
+                balance: "Баланс",
+                language: "Язык",
+                currency: "Валюта",
+                saveChanges: "Сохранить Изменения",
+                savePreferences: "Сохранить Предпочтения",
+                uploadPhoto: "Загрузить Фото",
+                removePhoto: "Удалить Фото",
+                logOut: "Выйти",
+                profilePhoto: "Фото Профиля",
+                securitySettings: "Настройки Безопасности",
+                notificationSettings: "Настройки Уведомлений",
+                languageCurrencyTitle: "Язык и Валюта",
+                currentPassword: "Текущий Пароль",
+                newPassword: "Новый Пароль",
+                confirmPassword: "Подтвердить Пароль",
+                newPin: "Новый PIN",
+                pushNotifications: "Push Уведомления",
+                emailAlerts: "Email Уведомления",
+                smsAlerts: "SMS Уведомления",
+                receiveAlerts: "Получать уведомления на устройстве",
+                importantUpdates: "Важные обновления аккаунта по email",
+                transactionConfirmations: "Подтверждения транзакций по SMS"
+            },
+            zh: {
+                home: "首页",
+                profile: "个人资料",
+                settings: "设置",
+                security: "安全",
+                notifications: "通知",
+                languageCurrency: "语言和货币",
+                personalInfo: "个人信息",
+                accountInfo: "账户信息",
+                preferences: "偏好设置",
+                fullName: "全名",
+                email: "电子邮件地址",
+                phone: "电话号码",
+                dateOfBirth: "出生日期",
+                accountNumber: "账户号码",
+                accountType: "账户类型",
+                balance: "余额",
+                language: "语言",
+                currency: "货币",
+                saveChanges: "保存更改",
+                savePreferences: "保存偏好设置",
+                uploadPhoto: "上传照片",
+                removePhoto: "删除照片",
+                logOut: "退出",
+                profilePhoto: "个人资料照片",
+                securitySettings: "安全设置",
+                notificationSettings: "通知设置",
+                languageCurrencyTitle: "语言和货币",
+                currentPassword: "当前密码",
+                newPassword: "新密码",
+                confirmPassword: "确认密码",
+                newPin: "新PIN",
+                pushNotifications: "推送通知",
+                emailAlerts: "邮件提醒",
+                smsAlerts: "短信提醒",
+                receiveAlerts: "在设备上接收提醒",
+                importantUpdates: "通过邮件接收重要账户更新",
+                transactionConfirmations: "通过短信确认交易"
+            },
+            ja: {
+                home: "ホーム",
+                profile: "プロフィール",
+                settings: "設定",
+                security: "セキュリティ",
+                notifications: "通知",
+                languageCurrency: "言語と通貨",
+                personalInfo: "個人情報",
+                accountInfo: "アカウント情報",
+                preferences: "環境設定",
+                fullName: "フルネーム",
+                email: "メールアドレス",
+                phone: "電話番号",
+                dateOfBirth: "生年月日",
+                accountNumber: "アカウント番号",
+                accountType: "アカウントタイプ",
+                balance: "残高",
+                language: "言語",
+                currency: "通貨",
+                saveChanges: "変更を保存",
+                savePreferences: "設定を保存",
+                uploadPhoto: "写真をアップロード",
+                removePhoto: "写真を削除",
+                logOut: "ログアウト",
+                profilePhoto: "プロフィール写真",
+                securitySettings: "セキュリティ設定",
+                notificationSettings: "通知設定",
+                languageCurrencyTitle: "言語と通貨",
+                currentPassword: "現在のパスワード",
+                newPassword: "新しいパスワード",
+                confirmPassword: "パスワードを確認",
+                newPin: "新しいPIN",
+                pushNotifications: "プッシュ通知",
+                emailAlerts: "メール通知",
+                smsAlerts: "SMS通知",
+                receiveAlerts: "デバイスで通知を受信",
+                importantUpdates: "メールで重要なアカウント更新を受信",
+                transactionConfirmations: "SMSで取引確認"
+            },
+            ko: {
+                home: "홈",
+                profile: "프로필",
+                settings: "설정",
+                security: "보안",
+                notifications: "알림",
+                languageCurrency: "언어 및 통화",
+                personalInfo: "개인 정보",
+                accountInfo: "계정 정보",
+                preferences: "환경 설정",
+                fullName: "전체 이름",
+                email: "이메일 주소",
+                phone: "전화 번호",
+                dateOfBirth: "생년월일",
+                accountNumber: "계정 번호",
+                accountType: "계정 유형",
+                balance: "잔액",
+                language: "언어",
+                currency: "통화",
+                saveChanges: "변경 사항 저장",
+                savePreferences: "설정 저장",
+                uploadPhoto: "사진 업로드",
+                removePhoto: "사진 삭제",
+                logOut: "로그아웃",
+                profilePhoto: "프로필 사진",
+                securitySettings: "보안 설정",
+                notificationSettings: "알림 설정",
+                languageCurrencyTitle: "언어 및 통화",
+                currentPassword: "현재 비밀번호",
+                newPassword: "새 비밀번호",
+                confirmPassword: "비밀번호 확인",
+                newPin: "새 PIN",
+                pushNotifications: "푸시 알림",
+                emailAlerts: "이메일 알림",
+                smsAlerts: "SMS 알림",
+                receiveAlerts: "기기에서 알림 받기",
+                importantUpdates: "이메일로 중요한 계정 업데이트 받기",
+                transactionConfirmations: "SMS로 거래 확인"
+            },
+            ar: {
+                home: "الرئيسية",
+                profile: "الملف الشخصي",
+                settings: "الإعدادات",
+                security: "الأمان",
+                notifications: "الإشعارات",
+                languageCurrency: "اللغة والعملة",
+                personalInfo: "المعلومات الشخصية",
+                accountInfo: "معلومات الحساب",
+                preferences: "التفضيلات",
+                fullName: "الاسم الكامل",
+                email: "عنوان البريد الإلكتروني",
+                phone: "رقم الهاتف",
+                dateOfBirth: "تاريخ الميلاد",
+                accountNumber: "رقم الحساب",
+                accountType: "نوع الحساب",
+                balance: "الرصيد",
+                language: "اللغة",
+                currency: "العملة",
+                saveChanges: "حفظ التغييرات",
+                savePreferences: "حفظ التفضيلات",
+                uploadPhoto: "تحميل الصورة",
+                removePhoto: "إزالة الصورة",
+                logOut: "تسجيل الخروج",
+                profilePhoto: "صورة الملف الشخصي",
+                securitySettings: "إعدادات الأمان",
+                notificationSettings: "إعدادات الإشعارات",
+                languageCurrencyTitle: "اللغة والعملة",
+                currentPassword: "كلمة المرور الحالية",
+                newPassword: "كلمة مرور جديدة",
+                confirmPassword: "تأكيد كلمة المرور",
+                newPin: "PIN جديد",
+                pushNotifications: "إشعارات الدفع",
+                emailAlerts: "تنبيهات البريد الإلكتروني",
+                smsAlerts: "تنبيهات الرسائل النصية",
+                receiveAlerts: "تلقي التنبيهات على جهازك",
+                importantUpdates: "تحديثات الحساب المهمة عبر البريد الإلكتروني",
+                transactionConfirmations: "تأكيدات المعاملات عبر الرسائل النصية"
+            },
+            hi: {
+                home: "होम",
+                profile: "प्रोफ़ाइल",
+                settings: "सेटिंग्स",
+                security: "सुरक्षा",
+                notifications: "सूचनाएं",
+                languageCurrency: "भाषा और मुद्रा",
+                personalInfo: "व्यक्तिगत जानकारी",
+                accountInfo: "खाता जानकारी",
+                preferences: "प्राथमिकताएं",
+                fullName: "पूरा नाम",
+                email: "ईमेल पता",
+                phone: "फोन नंबर",
+                dateOfBirth: "जन्म तिथि",
+                accountNumber: "खाता संख्या",
+                accountType: "खाता प्रकार",
+                balance: "बैलेंस",
+                language: "भाषा",
+                currency: "मुद्रा",
+                saveChanges: "परिवर्तन सहेजें",
+                savePreferences: "प्राथमिकताएं सहेजें",
+                uploadPhoto: "फोटो अपलोड करें",
+                removePhoto: "फोटो हटाएं",
+                logOut: "लॉग आउट",
+                profilePhoto: "प्रोफ़ाइल फोटो",
+                securitySettings: "सुरक्षा सेटिंग्स",
+                notificationSettings: "सूचना सेटिंग्स",
+                languageCurrencyTitle: "भाषा और मुद्रा",
+                currentPassword: "वर्तमान पासवर्ड",
+                newPassword: "नया पासवर्ड",
+                confirmPassword: "पासवर्ड की पुष्टि करें",
+                newPin: "नया PIN",
+                pushNotifications: "पुश सूचनाएं",
+                emailAlerts: "ईमेल अलर्ट",
+                smsAlerts: "SMS अलर्ट",
+                receiveAlerts: "अपने डिवाइस पर अलर्ट प्राप्त करें",
+                importantUpdates: "ईमेल के माध्यम से महत्वपूर्ण खाता अपडेट",
+                transactionConfirmations: "SMS के माध्यम से लेनदेन पुष्टि"
+            }
+        };
+
+        function translateText(key, lang = 'en') {
+            // Extract base language code (e.g., 'en-CA' -> 'en')
+            const baseLang = lang.split('-')[0];
+            return translations[baseLang]?.[key] || translations.en[key] || key;
+        }
+
+        function updatePageLanguage(lang) {
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item span');
+            if (navItems[0]) navItems[0].textContent = translateText('home', lang);
+            if (navItems[1]) navItems[1].textContent = translateText('profile', lang);
+
+            // Update page title
+            const pageTitle = document.querySelector('.header-title');
+            if (pageTitle) pageTitle.textContent = translateText('profile', lang);
+
+            // Update section titles
+            const sectionTitles = document.querySelectorAll('.card-title');
+            sectionTitles.forEach(title => {
+                if (title.textContent.includes('Personal Information')) {
+                    title.textContent = translateText('personalInfo', lang);
+                } else if (title.textContent.includes('Account Information')) {
+                    title.textContent = translateText('accountInfo', lang);
+                } else if (title.textContent.includes('Settings')) {
+                    title.textContent = translateText('settings', lang);
+                }
+            });
+
+            // Update menu items
+            const menuTitles = document.querySelectorAll('.menu-title');
+            menuTitles.forEach(title => {
+                if (title.textContent === 'Security') {
+                    title.textContent = translateText('security', lang);
+                } else if (title.textContent === 'Notifications') {
+                    title.textContent = translateText('notifications', lang);
+                } else if (title.textContent === 'Language & Currency') {
+                    title.textContent = translateText('languageCurrency', lang);
+                }
+            });
+
+            // Update buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                if (button.textContent === 'Log Out') {
+                    button.textContent = translateText('logOut', lang);
+                }
+            });
+        }
+
         // Load profile data
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
+            
+            // Set initial language
+            const user = VanstraBank.getCurrentUser();
+            if (user && user.language) {
+                updatePageLanguage(user.language);
+            }
         });
 
         function loadProfileData() {
@@ -1115,10 +1939,6 @@
             openModal('languageCurrencyModal');
         }
 
-        function closeLanguageCurrencySettings() {
-            closeModal('languageCurrencyModal');
-        }
-
         function handleLanguageCurrencyUpdate(event) {
             event.preventDefault();
             
@@ -1134,10 +1954,14 @@
             if (result.success) {
                 closeModal('languageCurrencyModal');
                 showToast('Language and currency preferences updated successfully');
+                
+                // Update the page language immediately
+                updatePageLanguage(language);
+                
                 // Refresh the page to apply new formatting
                 setTimeout(() => {
                     window.location.reload();
-                }, 1000);
+                }, 1500);
             } else {
                 showToast(result.error || 'Failed to update preferences');
             }
