@@ -782,12 +782,36 @@
                 <form id="languageCurrencyForm">
                     <div class="form-group">
                         <label for="languageSelect" class="form-label">Language</label>
-                        <select id="languageSelect" class="form-select">
+                        <input type="text" id="languageSearch" class="form-input" placeholder="Search languages..." onkeyup="filterLanguages()">
+                        <select id="languageSelect" class="form-select" size="8">
                             <!-- North America -->
                             <optgroup label="🌎 North America">
                                 <option value="en">English (United States)</option>
                                 <option value="en-CA">English (Canada)</option>
                                 <option value="fr-CA">Français (Canada)</option>
+                                <option value="es-MX">Español (México)</option>
+                                <option value="es">Español (Puerto Rico)</option>
+                                <option value="es-CU">Español (Cuba)</option>
+                                <option value="es-DO">Español (República Dominicana)</option>
+                                <option value="es-GT">Español (Guatemala)</option>
+                                <option value="es-HN">Español (Honduras)</option>
+                                <option value="es-NI">Español (Nicaragua)</option>
+                                <option value="es-PA">Español (Panamá)</option>
+                                <option value="es-SV">Español (El Salvador)</option>
+                                <option value="es-CR">Español (Costa Rica)</option>
+                                <option value="es-BZ">Español (Belize)</option>
+                                <option value="es-HT">Kreyòl Ayisyen (Haiti)</option>
+                                <option value="es-JM">English (Jamaica)</option>
+                                <option value="es-BS">English (Bahamas)</option>
+                                <option value="es-BB">English (Barbados)</option>
+                                <option value="es-TT">English (Trinidad and Tobago)</option>
+                                <option value="es-GY">English (Guyana)</option>
+                                <option value="es-SR">Nederlands (Suriname)</option>
+                                <option value="es-AW">Nederlands (Aruba)</option>
+                                <option value="es-CW">Nederlands (Curaçao)</option>
+                                <option value="es-BQ">Nederlands (Bonaire)</option>
+                                <option value="es-SX">Nederlands (Sint Maarten)</option>
+                            </optgroup>
                                 <option value="es-MX">Español (México)</option>
                                 <option value="es">Español (Puerto Rico)</option>
                                 <option value="es-CU">Español (Cuba)</option>
@@ -1040,7 +1064,8 @@
                     </div>
                     <div class="form-group">
                         <label for="currencySelect" class="form-label">Currency</label>
-                        <select id="currencySelect" class="form-select">
+                        <input type="text" id="currencySearch" class="form-input" placeholder="Search currencies..." onkeyup="filterCurrencies()">
+                        <select id="currencySelect" class="form-select" size="8">
                             <option value="EUR">EUR (€) - Euro</option>
                             <option value="USD">USD ($) - US Dollar</option>
                             <option value="GBP">GBP (£) - British Pound</option>
@@ -1053,6 +1078,37 @@
                             <option value="NZD">NZD (NZ$) - New Zealand Dollar</option>
                             <option value="MXN">MXN ($) - Mexican Peso</option>
                             <option value="SGD">SGD (S$) - Singapore Dollar</option>
+                            <option value="HKD">HKD (HK$) - Hong Kong Dollar</option>
+                            <option value="NOK">NOK (kr) - Norwegian Krone</option>
+                            <option value="KRW">KRW (₩) - South Korean Won</option>
+                            <option value="TRY">TRY (₺) - Turkish Lira</option>
+                            <option value="RUB">RUB (₽) - Russian Ruble</option>
+                            <option value="INR">INR (₹) - Indian Rupee</option>
+                            <option value="BRL">BRL (R$) - Brazilian Real</option>
+                            <option value="ZAR">ZAR (R) - South African Rand</option>
+                            <option value="AED">AED (د.إ) - UAE Dirham</option>
+                            <option value="SAR">SAR (﷼) - Saudi Riyal</option>
+                            <option value="THB">THB (฿) - Thai Baht</option>
+                            <option value="MYR">MYR (RM) - Malaysian Ringgit</option>
+                            <option value="IDR">IDR (Rp) - Indonesian Rupiah</option>
+                            <option value="PHP">PHP (₱) - Philippine Peso</option>
+                            <option value="CZK">CZK (Kč) - Czech Koruna</option>
+                            <option value="PLN">PLN (zł) - Polish Złoty</option>
+                            <option value="HUF">HUF (Ft) - Hungarian Forint</option>
+                            <option value="DKK">DKK (kr) - Danish Krone</option>
+                            <option value="ILS">ILS (₪) - Israeli Shekel</option>
+                            <option value="EGP">EGP (£) - Egyptian Pound</option>
+                            <option value="VND">VND (₫) - Vietnamese Dong</option>
+                            <option value="PKR">PKR (₨) - Pakistani Rupee</option>
+                            <option value="BDT">BDT (৳) - Bangladeshi Taka</option>
+                            <option value="NGN">NGN (₦) - Nigerian Naira</option>
+                            <option value="KES">KES (KSh) - Kenyan Shilling</option>
+                            <option value="GHS">GHS (₵) - Ghanaian Cedi</option>
+                            <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+                            <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+                            <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
+                            <option value="XOF">XOF (CFA) - West African CFA Franc</option>
+                        </select>
                             <option value="HKD">HKD (HK$) - Hong Kong Dollar</option>
                             <option value="NOK">NOK (kr) - Norwegian Krone</option>
                             <option value="KRW">KRW (₩) - South Korean Won</option>
@@ -1727,23 +1783,41 @@
                 }
             });
 
-            // Update buttons
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                if (button.textContent === 'Log Out') {
-                    button.textContent = translateText('logOut', lang);
-                }
-            });
+        // Global language update system
+        function updateGlobalLanguage(lang) {
+            // Update page language
+            updatePageLanguage(lang);
+            
+            // Store current language globally
+            localStorage.setItem('vanstraGlobalLanguage', lang);
+            
+            // Dispatch custom event for other components to listen
+            window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
         }
+
+        // Listen for language changes from other tabs/windows
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'vanstraGlobalLanguage' && e.newValue) {
+                updatePageLanguage(e.newValue);
+            }
+        });
+
+        // Listen for language change events from other components
+        window.addEventListener('languageChanged', function(e) {
+            updatePageLanguage(e.detail.language);
+        });
 
         // Load profile data
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
             
-            // Set initial language
+            // Set initial language from user preferences or global setting
             const user = VanstraBank.getCurrentUser();
-            if (user && user.language) {
-                updatePageLanguage(user.language);
+            const globalLang = localStorage.getItem('vanstraGlobalLanguage');
+            const initialLang = (user && user.language) || globalLang || 'en';
+            
+            if (initialLang) {
+                updateGlobalLanguage(initialLang);
             }
         });
 
@@ -1955,8 +2029,8 @@
                 closeModal('languageCurrencyModal');
                 showToast('Language and currency preferences updated successfully');
                 
-                // Update the page language immediately
-                updatePageLanguage(language);
+                // Update the page language globally
+                updateGlobalLanguage(language);
                 
                 // Refresh the page to apply new formatting
                 setTimeout(() => {
@@ -1964,6 +2038,84 @@
                 }, 1500);
             } else {
                 showToast(result.error || 'Failed to update preferences');
+            }
+        }
+
+        // Search and filter functions
+        function filterLanguages() {
+            const searchTerm = document.getElementById('languageSearch').value.toLowerCase();
+            const select = document.getElementById('languageSelect');
+            const options = select.querySelectorAll('option');
+            const optgroups = select.querySelectorAll('optgroup');
+
+            let hasVisibleOptions = false;
+
+            optgroups.forEach(optgroup => {
+                const groupOptions = optgroup.querySelectorAll('option');
+                let groupHasVisible = false;
+
+                groupOptions.forEach(option => {
+                    const text = option.textContent.toLowerCase();
+                    const matches = text.includes(searchTerm);
+                    option.style.display = matches ? '' : 'none';
+                    if (matches) {
+                        groupHasVisible = true;
+                        hasVisibleOptions = true;
+                    }
+                });
+
+                optgroup.style.display = groupHasVisible ? '' : 'none';
+            });
+
+            // If no matches, show a message
+            if (!hasVisibleOptions && searchTerm) {
+                // Create a temporary message option
+                const existingMessage = select.querySelector('.no-results');
+                if (!existingMessage) {
+                    const messageOption = document.createElement('option');
+                    messageOption.textContent = `No languages found for "${searchTerm}"`;
+                    messageOption.className = 'no-results';
+                    messageOption.disabled = true;
+                    select.appendChild(messageOption);
+                }
+            } else {
+                // Remove any existing message
+                const messageOption = select.querySelector('.no-results');
+                if (messageOption) {
+                    messageOption.remove();
+                }
+            }
+        }
+
+        function filterCurrencies() {
+            const searchTerm = document.getElementById('currencySearch').value.toLowerCase();
+            const select = document.getElementById('currencySelect');
+            const options = select.querySelectorAll('option');
+
+            let hasVisibleOptions = false;
+
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                const matches = text.includes(searchTerm);
+                option.style.display = matches ? '' : 'none';
+                if (matches) hasVisibleOptions = true;
+            });
+
+            // If no matches, show a message
+            if (!hasVisibleOptions && searchTerm) {
+                const existingMessage = select.querySelector('.no-results');
+                if (!existingMessage) {
+                    const messageOption = document.createElement('option');
+                    messageOption.textContent = `No currencies found for "${searchTerm}"`;
+                    messageOption.className = 'no-results';
+                    messageOption.disabled = true;
+                    select.appendChild(messageOption);
+                }
+            } else {
+                const messageOption = select.querySelector('.no-results');
+                if (messageOption) {
+                    messageOption.remove();
+                }
             }
         }
 

@@ -2719,6 +2719,475 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="bank-core-v2.js"></script>
     <script>
+        // Translation system
+        const translations = {
+            en: {
+                // Navigation
+                home: "Home",
+                profile: "Profile",
+                // Dashboard
+                dashboard: "Dashboard",
+                welcome: "Welcome",
+                balance: "Balance",
+                transfer: "Transfer",
+                payBills: "Pay Bills",
+                transactions: "Transactions",
+                deposit: "Deposit",
+                // Actions
+                sendMoney: "Send Money",
+                requestMoney: "Request Money",
+                viewAll: "View All",
+                quickActions: "Quick Actions",
+                recentTransactions: "Recent Transactions",
+                // Forms
+                amount: "Amount",
+                recipient: "Recipient",
+                accountNumber: "Account Number",
+                description: "Description",
+                confirm: "Confirm",
+                cancel: "Cancel",
+                // Status
+                success: "Success",
+                error: "Error",
+                pending: "Pending",
+                completed: "Completed",
+                failed: "Failed",
+                // Time
+                today: "Today",
+                yesterday: "Yesterday",
+                // Modals
+                transferMoney: "Transfer Money",
+                payBill: "Pay Bill",
+                depositFunds: "Deposit Funds",
+                transactionDetails: "Transaction Details"
+            },
+            es: {
+                home: "Inicio",
+                profile: "Perfil",
+                dashboard: "Panel de Control",
+                welcome: "Bienvenido",
+                balance: "Saldo",
+                transfer: "Transferir",
+                payBills: "Pagar Facturas",
+                transactions: "Transacciones",
+                deposit: "Depósito",
+                sendMoney: "Enviar Dinero",
+                requestMoney: "Solicitar Dinero",
+                viewAll: "Ver Todo",
+                quickActions: "Acciones Rápidas",
+                recentTransactions: "Transacciones Recientes",
+                amount: "Monto",
+                recipient: "Destinatario",
+                accountNumber: "Número de Cuenta",
+                description: "Descripción",
+                confirm: "Confirmar",
+                cancel: "Cancelar",
+                success: "Éxito",
+                error: "Error",
+                pending: "Pendiente",
+                completed: "Completado",
+                failed: "Fallido",
+                today: "Hoy",
+                yesterday: "Ayer",
+                transferMoney: "Transferir Dinero",
+                payBill: "Pagar Factura",
+                depositFunds: "Depositar Fondos",
+                transactionDetails: "Detalles de Transacción"
+            },
+            fr: {
+                home: "Accueil",
+                profile: "Profil",
+                dashboard: "Tableau de Bord",
+                welcome: "Bienvenue",
+                balance: "Solde",
+                transfer: "Transférer",
+                payBills: "Payer les Factures",
+                transactions: "Transactions",
+                deposit: "Dépôt",
+                sendMoney: "Envoyer de l'Argent",
+                requestMoney: "Demander de l'Argent",
+                viewAll: "Voir Tout",
+                quickActions: "Actions Rapides",
+                recentTransactions: "Transactions Récentes",
+                amount: "Montant",
+                recipient: "Destinataire",
+                accountNumber: "Numéro de Compte",
+                description: "Description",
+                confirm: "Confirmer",
+                cancel: "Annuler",
+                success: "Succès",
+                error: "Erreur",
+                pending: "En Attente",
+                completed: "Terminé",
+                failed: "Échoué",
+                today: "Aujourd'hui",
+                yesterday: "Hier",
+                transferMoney: "Transférer de l'Argent",
+                payBill: "Payer une Facture",
+                depositFunds: "Déposer des Fonds",
+                transactionDetails: "Détails de Transaction"
+            },
+            de: {
+                home: "Startseite",
+                profile: "Profil",
+                dashboard: "Dashboard",
+                welcome: "Willkommen",
+                balance: "Kontostand",
+                transfer: "Überweisen",
+                payBills: "Rechnungen Bezahlen",
+                transactions: "Transaktionen",
+                deposit: "Einzahlung",
+                sendMoney: "Geld Senden",
+                requestMoney: "Geld Anfordern",
+                viewAll: "Alle Anzeigen",
+                quickActions: "Schnellaktionen",
+                recentTransactions: "Kürzliche Transaktionen",
+                amount: "Betrag",
+                recipient: "Empfänger",
+                accountNumber: "Kontonummer",
+                description: "Beschreibung",
+                confirm: "Bestätigen",
+                cancel: "Abbrechen",
+                success: "Erfolg",
+                error: "Fehler",
+                pending: "Ausstehend",
+                completed: "Abgeschlossen",
+                failed: "Fehlgeschlagen",
+                today: "Heute",
+                yesterday: "Gestern",
+                transferMoney: "Geld Überweisen",
+                payBill: "Rechnung Bezahlen",
+                depositFunds: "Gelder Einzahlen",
+                transactionDetails: "Transaktionsdetails"
+            },
+            pt: {
+                home: "Início",
+                profile: "Perfil",
+                dashboard: "Painel de Controle",
+                welcome: "Bem-vindo",
+                balance: "Saldo",
+                transfer: "Transferir",
+                payBills: "Pagar Contas",
+                transactions: "Transações",
+                deposit: "Depósito",
+                sendMoney: "Enviar Dinheiro",
+                requestMoney: "Solicitar Dinheiro",
+                viewAll: "Ver Tudo",
+                quickActions: "Ações Rápidas",
+                recentTransactions: "Transações Recentes",
+                amount: "Valor",
+                recipient: "Destinatário",
+                accountNumber: "Número da Conta",
+                description: "Descrição",
+                confirm: "Confirmar",
+                cancel: "Cancelar",
+                success: "Sucesso",
+                error: "Erro",
+                pending: "Pendente",
+                completed: "Concluído",
+                failed: "Falhou",
+                today: "Hoje",
+                yesterday: "Ontem",
+                transferMoney: "Transferir Dinheiro",
+                payBill: "Pagar Conta",
+                depositFunds: "Depositar Fundos",
+                transactionDetails: "Detalhes da Transação"
+            },
+            it: {
+                home: "Home",
+                profile: "Profilo",
+                dashboard: "Dashboard",
+                welcome: "Benvenuto",
+                balance: "Saldo",
+                transfer: "Trasferisci",
+                payBills: "Paga Bollette",
+                transactions: "Transazioni",
+                deposit: "Deposito",
+                sendMoney: "Invia Denaro",
+                requestMoney: "Richiedi Denaro",
+                viewAll: "Vedi Tutto",
+                quickActions: "Azioni Rapide",
+                recentTransactions: "Transazioni Recenti",
+                amount: "Importo",
+                recipient: "Destinatario",
+                accountNumber: "Numero Conto",
+                description: "Descrizione",
+                confirm: "Conferma",
+                cancel: "Annulla",
+                success: "Successo",
+                error: "Errore",
+                pending: "In Attesa",
+                completed: "Completato",
+                failed: "Fallito",
+                today: "Oggi",
+                yesterday: "Ieri",
+                transferMoney: "Trasferisci Denaro",
+                payBill: "Paga Bolletta",
+                depositFunds: "Deposita Fondi",
+                transactionDetails: "Dettagli Transazione"
+            },
+            ru: {
+                home: "Главная",
+                profile: "Профиль",
+                dashboard: "Панель Управления",
+                welcome: "Добро пожаловать",
+                balance: "Баланс",
+                transfer: "Перевод",
+                payBills: "Оплатить Счета",
+                transactions: "Транзакции",
+                deposit: "Депозит",
+                sendMoney: "Отправить Деньги",
+                requestMoney: "Запросить Деньги",
+                viewAll: "Посмотреть Все",
+                quickActions: "Быстрые Действия",
+                recentTransactions: "Недавние Транзакции",
+                amount: "Сумма",
+                recipient: "Получатель",
+                accountNumber: "Номер Счета",
+                description: "Описание",
+                confirm: "Подтвердить",
+                cancel: "Отмена",
+                success: "Успех",
+                error: "Ошибка",
+                pending: "Ожидание",
+                completed: "Завершено",
+                failed: "Не удалось",
+                today: "Сегодня",
+                yesterday: "Вчера",
+                transferMoney: "Перевести Деньги",
+                payBill: "Оплатить Счет",
+                depositFunds: "Внести Средства",
+                transactionDetails: "Детали Транзакции"
+            },
+            zh: {
+                home: "首页",
+                profile: "个人资料",
+                dashboard: "仪表板",
+                welcome: "欢迎",
+                balance: "余额",
+                transfer: "转账",
+                payBills: "支付账单",
+                transactions: "交易",
+                deposit: "存款",
+                sendMoney: "发送资金",
+                requestMoney: "请求资金",
+                viewAll: "查看全部",
+                quickActions: "快速操作",
+                recentTransactions: "最近交易",
+                amount: "金额",
+                recipient: "收款人",
+                accountNumber: "账户号码",
+                description: "描述",
+                confirm: "确认",
+                cancel: "取消",
+                success: "成功",
+                error: "错误",
+                pending: "待处理",
+                completed: "已完成",
+                failed: "失败",
+                today: "今天",
+                yesterday: "昨天",
+                transferMoney: "转账",
+                payBill: "支付账单",
+                depositFunds: "存款",
+                transactionDetails: "交易详情"
+            },
+            ja: {
+                home: "ホーム",
+                profile: "プロフィール",
+                dashboard: "ダッシュボード",
+                welcome: "ようこそ",
+                balance: "残高",
+                transfer: "送金",
+                payBills: "請求書支払い",
+                transactions: "取引",
+                deposit: "預け入れ",
+                sendMoney: "送金",
+                requestMoney: "入金依頼",
+                viewAll: "すべて表示",
+                quickActions: "クイックアクション",
+                recentTransactions: "最近の取引",
+                amount: "金額",
+                recipient: "受取人",
+                accountNumber: "口座番号",
+                description: "説明",
+                confirm: "確認",
+                cancel: "キャンセル",
+                success: "成功",
+                error: "エラー",
+                pending: "保留中",
+                completed: "完了",
+                failed: "失敗",
+                today: "今日",
+                yesterday: "昨日",
+                transferMoney: "送金",
+                payBill: "請求書支払い",
+                depositFunds: "預け入れ",
+                transactionDetails: "取引詳細"
+            },
+            ko: {
+                home: "홈",
+                profile: "프로필",
+                dashboard: "대시보드",
+                welcome: "환영합니다",
+                balance: "잔액",
+                transfer: "이체",
+                payBills: "청구서 결제",
+                transactions: "거래",
+                deposit: "입금",
+                sendMoney: "송금",
+                requestMoney: "입금 요청",
+                viewAll: "모두 보기",
+                quickActions: "빠른 작업",
+                recentTransactions: "최근 거래",
+                amount: "금액",
+                recipient: "받는 사람",
+                accountNumber: "계좌 번호",
+                description: "설명",
+                confirm: "확인",
+                cancel: "취소",
+                success: "성공",
+                error: "오류",
+                pending: "대기 중",
+                completed: "완료",
+                failed: "실패",
+                today: "오늘",
+                yesterday: "어제",
+                transferMoney: "송금",
+                payBill: "청구서 결제",
+                depositFunds: "입금",
+                transactionDetails: "거래 세부사항"
+            },
+            ar: {
+                home: "الرئيسية",
+                profile: "الملف الشخصي",
+                dashboard: "لوحة التحكم",
+                welcome: "مرحباً",
+                balance: "الرصيد",
+                transfer: "تحويل",
+                payBills: "دفع الفواتير",
+                transactions: "المعاملات",
+                deposit: "إيداع",
+                sendMoney: "إرسال الأموال",
+                requestMoney: "طلب الأموال",
+                viewAll: "عرض الكل",
+                quickActions: "الإجراءات السريعة",
+                recentTransactions: "المعاملات الأخيرة",
+                amount: "المبلغ",
+                recipient: "المستلم",
+                accountNumber: "رقم الحساب",
+                description: "الوصف",
+                confirm: "تأكيد",
+                cancel: "إلغاء",
+                success: "نجح",
+                error: "خطأ",
+                pending: "معلق",
+                completed: "مكتمل",
+                failed: "فشل",
+                today: "اليوم",
+                yesterday: "أمس",
+                transferMoney: "تحويل الأموال",
+                payBill: "دفع فاتورة",
+                depositFunds: "إيداع الأموال",
+                transactionDetails: "تفاصيل المعاملة"
+            },
+            hi: {
+                home: "होम",
+                profile: "प्रोफ़ाइल",
+                dashboard: "डैशबोर्ड",
+                welcome: "स्वागत है",
+                balance: "बैलेंस",
+                transfer: "ट्रांसफर",
+                payBills: "बिल्स का भुगतान करें",
+                transactions: "लेनदेन",
+                deposit: "जमा",
+                sendMoney: "पैसे भेजें",
+                requestMoney: "पैसे का अनुरोध करें",
+                viewAll: "सभी देखें",
+                quickActions: "त्वरित कार्य",
+                recentTransactions: "हाल के लेनदेन",
+                amount: "राशि",
+                recipient: "प्राप्तकर्ता",
+                accountNumber: "खाता संख्या",
+                description: "विवरण",
+                confirm: "पुष्टि करें",
+                cancel: "रद्द करें",
+                success: "सफलता",
+                error: "त्रुटि",
+                pending: "लंबित",
+                completed: "पूर्ण",
+                failed: "विफल",
+                today: "आज",
+                yesterday: "कल",
+                transferMoney: "पैसे ट्रांसफर करें",
+                payBill: "बिल का भुगतान करें",
+                depositFunds: "फंड जमा करें",
+                transactionDetails: "लेनदेन विवरण"
+            }
+        };
+
+        function translateText(key, lang = 'en') {
+            // Extract base language code (e.g., 'en-CA' -> 'en')
+            const baseLang = lang.split('-')[0];
+            return translations[baseLang]?.[key] || translations.en[key] || key;
+        }
+
+        function updatePageLanguage(lang) {
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item span');
+            if (navItems[0]) navItems[0].textContent = translateText('home', lang);
+            if (navItems[1]) navItems[1].textContent = translateText('profile', lang);
+
+            // Update dashboard elements
+            const welcomeElement = document.querySelector('.welcome-message');
+            if (welcomeElement) welcomeElement.textContent = translateText('welcome', lang);
+
+            const balanceLabel = document.querySelector('.balance-label');
+            if (balanceLabel) balanceLabel.textContent = translateText('balance', lang);
+
+            // Update action buttons
+            const actionButtons = document.querySelectorAll('.action-btn');
+            actionButtons.forEach(btn => {
+                const actionType = btn.dataset.action;
+                if (actionType === 'transfer') btn.textContent = translateText('transfer', lang);
+                if (actionType === 'payBills') btn.textContent = translateText('payBills', lang);
+                if (actionType === 'deposit') btn.textContent = translateText('deposit', lang);
+            });
+
+            // Update section titles
+            const sectionTitles = document.querySelectorAll('.section-title');
+            sectionTitles.forEach(title => {
+                if (title.textContent.includes('Quick Actions')) {
+                    title.textContent = translateText('quickActions', lang);
+                } else if (title.textContent.includes('Recent Transactions')) {
+                    title.textContent = translateText('recentTransactions', lang);
+                }
+            });
+        }
+
+        // Global language update system
+        function updateGlobalLanguage(lang) {
+            // Update page language
+            updatePageLanguage(lang);
+            
+            // Store current language globally
+            localStorage.setItem('vanstraGlobalLanguage', lang);
+            
+            // Dispatch custom event for other components to listen
+            window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+        }
+
+        // Listen for language changes from other tabs/windows
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'vanstraGlobalLanguage' && e.newValue) {
+                updatePageLanguage(e.newValue);
+            }
+        });
+
+        // Listen for language change events from other components
+        window.addEventListener('languageChanged', function(e) {
+            updatePageLanguage(e.detail.language);
+        });
         // Auto-create test users if none exist and auto-login
         function initializeDemoMode() {
             const users = VanstraBank.getAllUsers();
@@ -2769,6 +3238,15 @@
             console.log('🚀 Running Suspension Interceptor Setup...');
             setupSuspensionInterceptor();
             console.log('✅ Dashboard initialized successfully');
+            
+            // Initialize language
+            const user = VanstraBank.getCurrentUser();
+            const globalLang = localStorage.getItem('vanstraGlobalLanguage');
+            const initialLang = (user && user.language) || globalLang || 'en';
+            
+            if (initialLang) {
+                updateGlobalLanguage(initialLang);
+            }
             
             // Chat handlers removed (internal chat disabled)
         });
