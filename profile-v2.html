@@ -431,7 +431,67 @@
         .nav-item.active { color: var(--gold); }
         
         .nav-item svg { width: 24px; height: 24px; }
-        .nav-item span { font-size: 11px; font-weight: 500; }
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        .preference-section {
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid #F3F4F6;
+        }
+        
+        .preference-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .preference-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .preference-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1F2937;
+            margin: 0;
+        }
+        
+        .preference-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+        
+        @media (max-width: 480px) {
+            .preference-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
         
         /* Bank Search Modal Styles */
         .bank-search-input {
@@ -779,12 +839,27 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="languageCurrencyForm">
-                    <div class="form-group">
-                        <label for="languageSelect" class="form-label">Language</label>
-                        <input type="text" id="languageSearch" class="form-input" placeholder="Search languages..." onkeyup="filterLanguages()">
-                        <select id="languageSelect" class="form-select" size="8">
-                            <!-- North America -->
+                <div style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 14px; color: #6B7280; margin: 0; text-align: center;">
+                        Choose your preferred language and currency for a personalized banking experience
+                    </p>
+                </div>
+                
+                <div class="preference-grid">
+                    <!-- Language Section -->
+                    <div class="preference-section">
+                        <div class="preference-header">
+                            <div class="preference-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                                </svg>
+                            </div>
+                            <h4 class="preference-title">Language</h4>
+                        </div>
+                        <div style="margin-bottom: 0.75rem;">
+                            <input type="text" id="languageSearch" class="form-input" placeholder="Search languages..." onkeyup="filterLanguages()">
+                        </div>
+                        <select id="languageSelect" class="form-select">
                             <optgroup label="🌎 North America">
                                 <option value="en">English (United States)</option>
                                 <option value="en-CA">English (Canada)</option>
@@ -812,33 +887,9 @@
                                 <option value="es-BQ">Nederlands (Bonaire)</option>
                                 <option value="es-SX">Nederlands (Sint Maarten)</option>
                             </optgroup>
-                                <option value="es-MX">Español (México)</option>
-                                <option value="es">Español (Puerto Rico)</option>
-                                <option value="es-CU">Español (Cuba)</option>
-                                <option value="es-DO">Español (República Dominicana)</option>
-                                <option value="es-GT">Español (Guatemala)</option>
-                                <option value="es-HN">Español (Honduras)</option>
-                                <option value="es-NI">Español (Nicaragua)</option>
-                                <option value="es-PA">Español (Panamá)</option>
-                                <option value="es-SV">Español (El Salvador)</option>
-                                <option value="es-CR">Español (Costa Rica)</option>
-                                <option value="es-BZ">Español (Belize)</option>
-                                <option value="es-HT">Kreyòl Ayisyen (Haiti)</option>
-                                <option value="es-JM">English (Jamaica)</option>
-                                <option value="es-BS">English (Bahamas)</option>
-                                <option value="es-BB">English (Barbados)</option>
-                                <option value="es-TT">English (Trinidad and Tobago)</option>
-                                <option value="es-GY">English (Guyana)</option>
-                                <option value="es-SR">Nederlands (Suriname)</option>
-                                <option value="es-AW">Nederlands (Aruba)</option>
-                                <option value="es-CW">Nederlands (Curaçao)</option>
-                                <option value="es-BQ">Nederlands (Bonaire)</option>
-                                <option value="es-SX">Nederlands (Sint Maarten)</option>
-                            </optgroup>
                             
-                            <!-- South America -->
                             <optgroup label="🌎 South America">
-                                <option value="es-BR">Português (Brasil)</option>
+                                <option value="pt-BR">Português (Brasil)</option>
                                 <option value="es-AR">Español (Argentina)</option>
                                 <option value="es-CO">Español (Colombia)</option>
                                 <option value="es-PE">Español (Perú)</option>
@@ -851,144 +902,37 @@
                                 <option value="es-GF">Français (Guyane Française)</option>
                             </optgroup>
                             
-                            <!-- Europe -->
                             <optgroup label="🌍 Europe">
                                 <option value="en-GB">English (United Kingdom)</option>
                                 <option value="en-IE">English (Ireland)</option>
                                 <option value="de">Deutsch (Deutschland)</option>
                                 <option value="de-AT">Deutsch (Österreich)</option>
                                 <option value="de-CH">Deutsch (Schweiz)</option>
-                                <option value="de-LU">Deutsch (Luxembourg)</option>
-                                <option value="de-BE">Deutsch (Belgien)</option>
                                 <option value="fr">Français (France)</option>
                                 <option value="fr-BE">Français (Belgique)</option>
                                 <option value="fr-CH">Français (Suisse)</option>
-                                <option value="fr-LU">Français (Luxembourg)</option>
-                                <option value="fr-MC">Français (Monaco)</option>
                                 <option value="it">Italiano (Italia)</option>
                                 <option value="it-CH">Italiano (Svizzera)</option>
                                 <option value="es-ES">Español (España)</option>
                                 <option value="pt">Português (Portugal)</option>
-                                <option value="pt-CH">Português (Suiça)</option>
                                 <option value="nl">Nederlands (Nederland)</option>
                                 <option value="nl-BE">Nederlands (België)</option>
                                 <option value="da">Dansk (Danmark)</option>
                                 <option value="sv">Svenska (Sverige)</option>
                                 <option value="no">Norsk (Norge)</option>
                                 <option value="fi">Suomi (Suomi)</option>
-                                <option value="is">Íslenska (Ísland)</option>
-                                <option value="fo">Føroyskt (Føroyar)</option>
-                                <option value="kl">Kalaallisut (Kalaallit Nunaat)</option>
                                 <option value="pl">Polski (Polska)</option>
                                 <option value="cs">Čeština (Česká republika)</option>
                                 <option value="sk">Slovenčina (Slovensko)</option>
-                                <option value="sl">Slovenščina (Slovenija)</option>
-                                <option value="hr">Hrvatski (Hrvatska)</option>
-                                <option value="bs">Bosanski (Bosna i Hercegovina)</option>
-                                <option value="sr">Српски (Србија)</option>
-                                <option value="mk">Македонски (Македонија)</option>
-                                <option value="sq">Shqip (Shqipëria)</option>
-                                <option value="el">Ελληνικά (Ελλάδα)</option>
-                                <option value="bg">Български (България)</option>
-                                <option value="ro">Română (România)</option>
                                 <option value="hu">Magyar (Magyarország)</option>
                                 <option value="tr">Türkçe (Türkiye)</option>
-                                <option value="et">Eesti (Eesti)</option>
-                                <option value="lv">Latviešu (Latvija)</option>
-                                <option value="lt">Lietuvių (Lietuva)</option>
-                                <option value="mt">Malti (Malta)</option>
-                                <option value="ga">Gaeilge (Éire)</option>
-                                <option value="cy">Cymraeg (Cymru)</option>
-                                <option value="gd">Gàidhlig (Alba)</option>
-                                <option value="kw">Kernewek (Kernow)</option>
-                                <option value="br">Brezhoneg (Breizh)</option>
-                                <option value="co">Corsu (Corsica)</option>
-                                <option value="eu">Euskera (Euskadi)</option>
-                                <option value="ca">Català (Catalunya)</option>
-                                <option value="gl">Galego (Galicia)</option>
-                                <option value="oc">Occitan (Occitània)</option>
-                                <option value="an">Aragonés (Aragón)</option>
-                                <option value="ast">Asturianu (Asturies)</option>
-                                <option value="be">Беларуская (Беларусь)</option>
-                                <option value="uk">Українська (Україна)</option>
                                 <option value="ru">Русский (Россия)</option>
-                                <option value="hy">Հայերեն (Հայաստան)</option>
-                                <option value="ka">ქართული (საქართველო)</option>
-                                <option value="az">Azərbaycan (Azərbaycan)</option>
-                                <option value="kk">Қазақша (Қазақстан)</option>
-                                <option value="ky">Кыргызча (Кыргызстан)</option>
-                                <option value="tg">Тоҷикӣ (Тоҷикистон)</option>
-                                <option value="tk">Türkmençe (Türkmenistan)</option>
-                                <option value="uz">O'zbekcha (O'zbekiston)</option>
+                                <option value="uk">Українська (Україна)</option>
                             </optgroup>
                             
-                            <!-- Africa -->
-                            <optgroup label="🌍 Africa">
-                                <option value="ar-EG">العربية (مصر)</option>
-                                <option value="ar-MA">العربية (المغرب)</option>
-                                <option value="ar-TN">العربية (تونس)</option>
-                                <option value="ar-DZ">العربية (الجزائر)</option>
-                                <option value="ar-LY">العربية (ليبيا)</option>
-                                <option value="ar-SD">العربية (السودان)</option>
-                                <option value="ar-SO">العربية (الصومال)</option>
-                                <option value="ar-IQ">العربية (العراق)</option>
-                                <option value="ar-JO">العربية (الأردن)</option>
-                                <option value="ar-LB">العربية (لبنان)</option>
-                                <option value="ar-SY">العربية (سوريا)</option>
-                                <option value="ar-YE">العربية (اليمن)</option>
-                                <option value="ar-AE">العربية (الإمارات العربية المتحدة)</option>
-                                <option value="ar-SA">العربية (المملكة العربية السعودية)</option>
-                                <option value="ar-KW">العربية (الكويت)</option>
-                                <option value="ar-BH">العربية (البحرين)</option>
-                                <option value="ar-QA">العربية (قطر)</option>
-                                <option value="ar-OM">العربية (عمان)</option>
-                                <option value="sw">Kiswahili (Tanzania)</option>
-                                <option value="sw-KE">Kiswahili (Kenya)</option>
-                                <option value="am">አማርኛ (ኢትዮጵያ)</option>
-                                <option value="ti">ትግርኛ (ኢትዮጵያ)</option>
-                                <option value="om">Oromoo (Oromia)</option>
-                                <option value="so">Soomaali (Soomaaliya)</option>
-                                <option value="aa">Afar (Djibouti)</option>
-                                <option value="ha">Hausa (Nigeria)</option>
-                                <option value="yo">Yorùbá (Nigeria)</option>
-                                <option value="ig">Igbo (Nigeria)</option>
-                                <option value="ff">Pulaar (Senegal)</option>
-                                <option value="bm">Bamanankan (Mali)</option>
-                                <option value="sn">chiShona (Zimbabwe)</option>
-                                <option value="zu">isiZulu (South Africa)</option>
-                                <option value="xh">isiXhosa (South Africa)</option>
-                                <option value="af">Afrikaans (South Africa)</option>
-                                <option value="st">Sesotho (South Africa)</option>
-                                <option value="tn">Setswana (Botswana)</option>
-                                <option value="ve">Tshivenda (South Africa)</option>
-                                <option value="ts">Xitsonga (South Africa)</option>
-                                <option value="nr">isiNdebele (South Africa)</option>
-                                <option value="ss">siSwati (Swaziland)</option>
-                                <option value="hi">हिन्दी (Mauritius)</option>
-                                <option value="ta">தமிழ் (Mauritius)</option>
-                                <option value="te">తెలుగు (Mauritius)</option>
-                                <option value="ur">اردو (Mauritius)</option>
-                                <option value="mg">Malagasy (Madagascar)</option>
-                                <option value="rn">Kirundi (Burundi)</option>
-                                <option value="rw">Kinyarwanda (Rwanda)</option>
-                                <option value="kg">Kikongo (Congo)</option>
-                                <option value="ln">Lingala (Congo)</option>
-                                <option value="lu">Tshiluba (Congo)</option>
-                                <option value="fr-CD">Français (Congo)</option>
-                                <option value="pt-AO">Português (Angola)</option>
-                                <option value="pt-MZ">Português (Moçambique)</option>
-                                <option value="pt-GW">Português (Guiné-Bissau)</option>
-                                <option value="pt-ST">Português (São Tomé e Príncipe)</option>
-                                <option value="pt-CV">Português (Cabo Verde)</option>
-                            </optgroup>
-                            
-                            <!-- Asia -->
                             <optgroup label="🌏 Asia">
                                 <option value="zh-CN">中文 (中国)</option>
                                 <option value="zh-TW">中文 (台灣)</option>
-                                <option value="zh-HK">中文 (香港)</option>
-                                <option value="zh-SG">中文 (新加坡)</option>
-                                <option value="zh-MO">中文 (澳門)</option>
                                 <option value="ja">日本語 (日本)</option>
                                 <option value="ko">한국어 (대한민국)</option>
                                 <option value="vi">Tiếng Việt (Việt Nam)</option>
@@ -999,75 +943,57 @@
                                 <option value="hi">हिन्दी (भारत)</option>
                                 <option value="bn">বাংলা (বাংলাদেশ)</option>
                                 <option value="ur">اردو (پاکستان)</option>
-                                <option value="pa">ਪੰਜਾਬੀ (ਭਾਰਤ)</option>
-                                <option value="gu">ગુજરાતી (ભારત)</option>
-                                <option value="mr">मराठी (भारत)</option>
-                                <option value="ta">தமிழ் (இந்தியா)</option>
-                                <option value="te">తెలుగు (భారతదేశం)</option>
-                                <option value="kn">ಕನ್ನಡ (ಭಾರತ)</option>
-                                <option value="ml">മലയാളം (ഇന്ത്യ)</option>
-                                <option value="si">සිංහල (ශ්‍රී ලංකාව)</option>
-                                <option value="ne">नेपाली (नेपाल)</option>
-                                <option value="my">မြန်မာဘာသာ (မြန်မာ)</option>
-                                <option value="km">ភាសាខ្មែរ (កម្ពុជា)</option>
-                                <option value="lo">ພາສາລາວ (ລາວ)</option>
-                                <option value="mn">Монгол (Монгол улс)</option>
-                                <option value="bo">བོད་ཡིག (བོད།)</option>
-                                <option value="dz">རྫོང་ཁ (འབྲུག)</option>
+                                <option value="ar-SA">العربية (المملكة العربية السعودية)</option>
                                 <option value="fa">فارسی (ایران)</option>
-                                <option value="ar-IR">العربية (إيران)</option>
-                                <option value="ku">کوردی (کوردستان)</option>
-                                <option value="ps">پښتو (افغانستان)</option>
-                                <option value="ug">ئۇيغۇرچە (ئۇيغۇرستان)</option>
                                 <option value="he">עברית (ישראל)</option>
-                                <option value="yi">ייִדיש (ישראל)</option>
-                                <option value="ar-IL">العربية (إسرائيل)</option>
-                                <option value="ka">ქართული (საქართველო)</option>
-                                <option value="hy">Հայերեն (Հայաստան)</option>
-                                <option value="az">Azərbaycan (Azərbaycan)</option>
-                                <option value="kk">Қазақша (Қазақстан)</option>
-                                <option value="ky">Кыргызча (Кыргызстан)</option>
-                                <option value="tg">Тоҷикӣ (Тоҷикистон)</option>
-                                <option value="tk">Türkmençe (Türkmenistan)</option>
-                                <option value="uz">O'zbekcha (O'zbekiston)</option>
                             </optgroup>
                             
-                            <!-- Oceania -->
+                            <optgroup label="🌍 Africa">
+                                <option value="ar-EG">العربية (مصر)</option>
+                                <option value="ar-MA">العربية (المغرب)</option>
+                                <option value="ar-DZ">العربية (الجزائر)</option>
+                                <option value="sw">Kiswahili (Tanzania)</option>
+                                <option value="sw-KE">Kiswahili (Kenya)</option>
+                                <option value="am">አማርኛ (ኢትዮጵያ)</option>
+                                <option value="ha">Hausa (Nigeria)</option>
+                                <option value="yo">Yorùbá (Nigeria)</option>
+                                <option value="zu">isiZulu (South Africa)</option>
+                                <option value="af">Afrikaans (South Africa)</option>
+                                <option value="pt-AO">Português (Angola)</option>
+                                <option value="pt-MZ">Português (Moçambique)</option>
+                                <option value="fr-CD">Français (Congo)</option>
+                            </optgroup>
+                            
                             <optgroup label="🌏 Oceania">
                                 <option value="en-AU">English (Australia)</option>
                                 <option value="en-NZ">English (New Zealand)</option>
                                 <option value="en-PG">English (Papua New Guinea)</option>
-                                <option value="en-SB">English (Solomon Islands)</option>
-                                <option value="en-VU">English (Vanuatu)</option>
-                                <option value="en-FJ">English (Fiji)</option>
-                                <option value="en-WS">English (Samoa)</option>
-                                <option value="en-TO">English (Tonga)</option>
-                                <option value="en-KI">English (Kiribati)</option>
-                                <option value="en-NR">English (Nauru)</option>
-                                <option value="en-TV">English (Tuvalu)</option>
-                                <option value="en-PW">English (Palau)</option>
-                                <option value="en-FM">English (Micronesia)</option>
-                                <option value="en-MH">English (Marshall Islands)</option>
                                 <option value="mi">Māori (Aotearoa)</option>
-                                <option value="haw">ʻŌlelo Hawaiʻi (Hawaiʻi)</option>
                                 <option value="sm">Gagana Sāmoa (Sāmoa)</option>
-                                <option value="to">Faka Tonga (Tonga)</option>
                                 <option value="fj">Na Vosa Vakaviti (Fiji)</option>
-                                <option value="bi">Bislama (Vanuatu)</option>
-                                <option value="tpi">Tok Pisin (Papua New Guinea)</option>
-                                <option value="ho">Hiri Motu (Papua New Guinea)</option>
                             </optgroup>
                         </select>
-                        <div style="font-size: 12px; color: #6B7280; margin-top: 0.5rem;">
-                            Note: Language selection affects date/currency formatting. Full UI translation requires page refresh.
+                        <div style="font-size: 12px; color: #6B7280; margin-top: 0.75rem;">
+                            Affects date/currency formatting. UI translation requires page refresh.
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="currencySelect" class="form-label">Currency</label>
-                        <input type="text" id="currencySearch" class="form-input" placeholder="Search currencies..." onkeyup="filterCurrencies()">
-                        <select id="currencySelect" class="form-select" size="8">
-                            <option value="EUR">EUR (€) - Euro</option>
+                    
+                    <!-- Currency Section -->
+                    <div class="preference-section">
+                        <div class="preference-header">
+                            <div class="preference-icon">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h4 class="preference-title">Currency</h4>
+                        </div>
+                        <div style="margin-bottom: 0.75rem;">
+                            <input type="text" id="currencySearch" class="form-input" placeholder="Search currencies..." onkeyup="filterCurrencies()">
+                        </div>
+                        <select id="currencySelect" class="form-select">
                             <option value="USD">USD ($) - US Dollar</option>
+                            <option value="EUR">EUR (€) - Euro</option>
                             <option value="GBP">GBP (£) - British Pound</option>
                             <option value="JPY">JPY (¥) - Japanese Yen</option>
                             <option value="CAD">CAD (C$) - Canadian Dollar</option>
@@ -1109,39 +1035,14 @@
                             <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
                             <option value="XOF">XOF (CFA) - West African CFA Franc</option>
                         </select>
-                            <option value="HKD">HKD (HK$) - Hong Kong Dollar</option>
-                            <option value="NOK">NOK (kr) - Norwegian Krone</option>
-                            <option value="KRW">KRW (₩) - South Korean Won</option>
-                            <option value="TRY">TRY (₺) - Turkish Lira</option>
-                            <option value="RUB">RUB (₽) - Russian Ruble</option>
-                            <option value="INR">INR (₹) - Indian Rupee</option>
-                            <option value="BRL">BRL (R$) - Brazilian Real</option>
-                            <option value="ZAR">ZAR (R) - South African Rand</option>
-                            <option value="AED">AED (د.إ) - UAE Dirham</option>
-                            <option value="SAR">SAR (﷼) - Saudi Riyal</option>
-                            <option value="THB">THB (฿) - Thai Baht</option>
-                            <option value="MYR">MYR (RM) - Malaysian Ringgit</option>
-                            <option value="IDR">IDR (Rp) - Indonesian Rupiah</option>
-                            <option value="PHP">PHP (₱) - Philippine Peso</option>
-                            <option value="CZK">CZK (Kč) - Czech Koruna</option>
-                            <option value="PLN">PLN (zł) - Polish Złoty</option>
-                            <option value="HUF">HUF (Ft) - Hungarian Forint</option>
-                            <option value="DKK">DKK (kr) - Danish Krone</option>
-                            <option value="ILS">ILS (₪) - Israeli Shekel</option>
-                            <option value="EGP">EGP (£) - Egyptian Pound</option>
-                            <option value="VND">VND (₫) - Vietnamese Dong</option>
-                            <option value="PKR">PKR (₨) - Pakistani Rupee</option>
-                            <option value="BDT">BDT (৳) - Bangladeshi Taka</option>
-                            <option value="NGN">NGN (₦) - Nigerian Naira</option>
-                            <option value="KES">KES (KSh) - Kenyan Shilling</option>
-                            <option value="GHS">GHS (₵) - Ghanaian Cedi</option>
-                            <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
-                            <option value="UGX">UGX (USh) - Ugandan Shilling</option>
-                            <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
-                            <option value="XOF">XOF (CFA) - West African CFA Franc</option>
-                        </select>
+                        <div style="font-size: 12px; color: #6B7280; margin-top: 0.75rem;">
+                            Used for displaying amounts and transactions
+                        </div>
                     </div>
-                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Save Preferences</button>
+                </div>
+                
+                <form id="languageCurrencyForm" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn-primary" style="width: 100%;">Save Preferences</button>
                 </form>
             </div>
         </div>
