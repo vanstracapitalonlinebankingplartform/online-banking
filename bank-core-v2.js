@@ -63,6 +63,15 @@ const VanstraBank = (function() {
 
             // (optional) perform any one‑time migrations here
             // e.g. migrate old hash formats, add new fields, etc.
+            
+            // Migration: Add language and currency preferences to existing users
+            const users = JSON.parse(localStorage.getItem('vanstraUsers') || '{}');
+            Object.keys(users).forEach(userId => {
+                const user = users[userId];
+                if (!user.language) user.language = 'en';
+                if (!user.currency) user.currency = 'EUR';
+            });
+            localStorage.setItem('vanstraUsers', JSON.stringify(users));
         }
 
         if (!localStorage.getItem('vanstraUsers')) {
@@ -121,6 +130,7 @@ const VanstraBank = (function() {
             medal: 'gold', // Default medal
             balance: 5000.00, // Starting balance
             currency: 'EUR',
+            language: 'en', // Default language
             status: 'active',
             createdAt: new Date().toISOString(),
             lastLogin: null,
@@ -857,7 +867,7 @@ const VanstraBank = (function() {
         try {
             const user = getCurrentUser();
             const userCurrency = currency || (user && user.currency) || 'EUR';
-            const userLocale = locale || 'en-US'; // Default to English since we don't have user language
+            const userLocale = locale || (user && user.language) || 'en-US';
             
             return new Intl.NumberFormat(userLocale, {
                 style: 'currency',
@@ -867,7 +877,7 @@ const VanstraBank = (function() {
             // Fallback if invalid currency/locale or any error
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
-                currency: 'USD'
+                currency: 'EUR'
             }).format(amount);
         }
     }
@@ -892,7 +902,7 @@ const VanstraBank = (function() {
     function formatDateTime(dateString) {
         try {
             const user = getCurrentUser();
-            const locale = 'en-US'; // Default to English since we don't have user language
+            const locale = (user && user.language) || 'en-US';
             
             return new Date(dateString).toLocaleString(locale, {
                 day: 'numeric',
@@ -1022,6 +1032,45 @@ const VanstraBank = (function() {
             emit('security_updated', { userId: session.userId });
 
             return { success: true };
+        } catch (e) {
+            return { success: false, error: e.message };
+        }
+    }
+
+    function updateUserPreferences(preferences) {
+        try {
+            const sessionToken = localStorage.getItem('currentSession');
+            if (!sessionToken) {
+                return { success: false, error: 'Not authenticated' };
+            }
+
+            const sessions = JSON.parse(localStorage.getItem('vanstraSessions'));
+            const session = sessions[sessionToken];
+            if (!session) {
+                return { success: false, error: 'Session not found' };
+            }
+
+            const users = JSON.parse(localStorage.getItem('vanstraUsers'));
+            const user = users[session.userId];
+            if (!user) {
+                return { success: false, error: 'User not found' };
+            }
+
+            // Update preferences
+            if (preferences.currency) {
+                user.currency = preferences.currency;
+            }
+            if (preferences.language) {
+                user.language = preferences.language;
+            }
+
+            users[session.userId] = user;
+            localStorage.setItem('vanstraUsers', JSON.stringify(users));
+
+            // Emit event
+            emit('preferences_updated', { userId: session.userId, preferences });
+
+            return { success: true, user: sanitizeForClient(user) };
         } catch (e) {
             return { success: false, error: e.message };
         }
@@ -1287,6 +1336,7 @@ const VanstraBank = (function() {
         updateProfile,
         updateAvatar,
         updateSecuritySettings,
+        updateUserPreferences,
         
         // Password Recovery
         requestPasswordReset,
