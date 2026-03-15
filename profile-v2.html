@@ -1783,6 +1783,15 @@
                 }
             });
 
+            // Update buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                if (button.textContent === 'Log Out') {
+                    button.textContent = translateText('logOut', lang);
+                }
+            });
+        }
+
         // Global language update system
         function updateGlobalLanguage(lang) {
             // Update page language
