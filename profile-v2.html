@@ -1970,12 +1970,6 @@
             return translations[baseLang]?.[key] || translations.en[key] || key;
         }
 
-        function translateText(key, lang = 'en') {
-            // Extract base language code (e.g., 'en-CA' -> 'en')
-            const baseLang = lang.split('-')[0];
-            return translations[baseLang]?.[key] || translations.en[key] || key;
-        }
-
         function updatePageLanguage(lang) {
             // Extract base language code (e.g., 'en-CA' -> 'en')
             const baseLang = lang.split('-')[0];
@@ -1987,201 +1981,43 @@
             const navItems = document.querySelectorAll('.nav-item span');
             if (navItems[0]) navItems[0].textContent = translateText('home', lang);
             if (navItems[1]) navItems[1].textContent = translateText('profile', lang);
-                home: "首页",
-                profile: "个人资料",
-                settings: "设置",
-                security: "安全",
-                notifications: "通知",
-                languageCurrency: "语言和货币",
-                personalInfo: "个人信息",
-                accountInfo: "账户信息",
-                preferences: "偏好设置",
-                fullName: "全名",
-                email: "电子邮件地址",
-                phone: "电话号码",
-                dateOfBirth: "出生日期",
-                accountNumber: "账户号码",
-                accountType: "账户类型",
-                balance: "余额",
-                language: "语言",
-                currency: "货币",
-                saveChanges: "保存更改",
-                savePreferences: "保存偏好设置",
-                uploadPhoto: "上传照片",
-                removePhoto: "删除照片",
-                logOut: "退出",
-                profilePhoto: "个人资料照片",
-                securitySettings: "安全设置",
-                notificationSettings: "通知设置",
-                languageCurrencyTitle: "语言和货币",
-                currentPassword: "当前密码",
-                newPassword: "新密码",
-                confirmPassword: "确认密码",
-                newPin: "新PIN",
-                pushNotifications: "推送通知",
-                emailAlerts: "邮件提醒",
-                smsAlerts: "短信提醒",
-                receiveAlerts: "在设备上接收提醒",
-                importantUpdates: "通过邮件接收重要账户更新",
-                transactionConfirmations: "通过短信确认交易"
-            },
-            ja: {
-                home: "ホーム",
-                profile: "プロフィール",
-                settings: "設定",
-                security: "セキュリティ",
-                notifications: "通知",
-                languageCurrency: "言語と通貨",
-                personalInfo: "個人情報",
-                accountInfo: "アカウント情報",
-                preferences: "環境設定",
-                fullName: "フルネーム",
-                email: "メールアドレス",
-                phone: "電話番号",
-                dateOfBirth: "生年月日",
-                accountNumber: "アカウント番号",
-                accountType: "アカウントタイプ",
-                balance: "残高",
-                language: "言語",
-                currency: "通貨",
-                saveChanges: "変更を保存",
-                savePreferences: "設定を保存",
-                uploadPhoto: "写真をアップロード",
-                removePhoto: "写真を削除",
-                logOut: "ログアウト",
-                profilePhoto: "プロフィール写真",
-                securitySettings: "セキュリティ設定",
-                notificationSettings: "通知設定",
-                languageCurrencyTitle: "言語と通貨",
-                currentPassword: "現在のパスワード",
-                newPassword: "新しいパスワード",
-                confirmPassword: "パスワードを確認",
-                newPin: "新しいPIN",
-                pushNotifications: "プッシュ通知",
-                emailAlerts: "メール通知",
-                smsAlerts: "SMS通知",
-                receiveAlerts: "デバイスで通知を受信",
-                importantUpdates: "メールで重要なアカウント更新を受信",
-                transactionConfirmations: "SMSで取引確認"
-            },
-            ko: {
-                home: "홈",
-                profile: "프로필",
-                settings: "설정",
-                security: "보안",
-                notifications: "알림",
-                languageCurrency: "언어 및 통화",
-                personalInfo: "개인 정보",
-                accountInfo: "계정 정보",
-                preferences: "환경 설정",
-                fullName: "전체 이름",
-                email: "이메일 주소",
-                phone: "전화 번호",
-                dateOfBirth: "생년월일",
-                accountNumber: "계정 번호",
-                accountType: "계정 유형",
-                balance: "잔액",
-                language: "언어",
-                currency: "통화",
-                saveChanges: "변경 사항 저장",
-                savePreferences: "설정 저장",
-                uploadPhoto: "사진 업로드",
-                removePhoto: "사진 삭제",
-                logOut: "로그아웃",
-                profilePhoto: "프로필 사진",
-                securitySettings: "보안 설정",
-                notificationSettings: "알림 설정",
-                languageCurrencyTitle: "언어 및 통화",
-                currentPassword: "현재 비밀번호",
-                newPassword: "새 비밀번호",
-                confirmPassword: "비밀번호 확인",
-                newPin: "새 PIN",
-                pushNotifications: "푸시 알림",
-                emailAlerts: "이메일 알림",
-                smsAlerts: "SMS 알림",
-                receiveAlerts: "기기에서 알림 받기",
-                importantUpdates: "이메일로 중요한 계정 업데이트 받기",
-                transactionConfirmations: "SMS로 거래 확인"
-            },
-            ar: {
-                home: "الرئيسية",
-                profile: "الملف الشخصي",
-                settings: "الإعدادات",
-                security: "الأمان",
-                notifications: "الإشعارات",
-                languageCurrency: "اللغة والعملة",
-                personalInfo: "المعلومات الشخصية",
-                accountInfo: "معلومات الحساب",
-                preferences: "التفضيلات",
-                fullName: "الاسم الكامل",
-                email: "عنوان البريد الإلكتروني",
-                phone: "رقم الهاتف",
-                dateOfBirth: "تاريخ الميلاد",
-                accountNumber: "رقم الحساب",
-                accountType: "نوع الحساب",
-                balance: "الرصيد",
-                language: "اللغة",
-                currency: "العملة",
-                saveChanges: "حفظ التغييرات",
-                savePreferences: "حفظ التفضيلات",
-                uploadPhoto: "تحميل الصورة",
-                removePhoto: "إزالة الصورة",
-                logOut: "تسجيل الخروج",
-                profilePhoto: "صورة الملف الشخصي",
-                securitySettings: "إعدادات الأمان",
-                notificationSettings: "إعدادات الإشعارات",
-                languageCurrencyTitle: "اللغة والعملة",
-                currentPassword: "كلمة المرور الحالية",
-                newPassword: "كلمة مرور جديدة",
-                confirmPassword: "تأكيد كلمة المرور",
-                newPin: "PIN جديد",
-                pushNotifications: "إشعارات الدفع",
-                emailAlerts: "تنبيهات البريد الإلكتروني",
-                smsAlerts: "تنبيهات الرسائل النصية",
-                receiveAlerts: "تلقي التنبيهات على جهازك",
-                importantUpdates: "تحديثات الحساب المهمة عبر البريد الإلكتروني",
-                transactionConfirmations: "تأكيدات المعاملات عبر الرسائل النصية"
-            },
-            hi: {
-                home: "होम",
-                profile: "प्रोफ़ाइल",
-                settings: "सेटिंग्स",
-                security: "सुरक्षा",
-                notifications: "सूचनाएं",
-                languageCurrency: "भाषा और मुद्रा",
-                personalInfo: "व्यक्तिगत जानकारी",
-                accountInfo: "खाता जानकारी",
-                preferences: "प्राथमिकताएं",
-                fullName: "पूरा नाम",
-                email: "ईमेल पता",
-                phone: "फोन नंबर",
-                dateOfBirth: "जन्म तिथि",
-                accountNumber: "खाता संख्या",
-                accountType: "खाता प्रकार",
-                balance: "बैलेंस",
-                language: "भाषा",
-                currency: "मुद्रा",
-                saveChanges: "परिवर्तन सहेजें",
-                savePreferences: "प्राथमिकताएं सहेजें",
-                uploadPhoto: "फोटो अपलोड करें",
-                removePhoto: "फोटो हटाएं",
-                logOut: "लॉग आउट",
-                profilePhoto: "प्रोफ़ाइल फोटो",
-                securitySettings: "सुरक्षा सेटिंग्स",
-                notificationSettings: "सूचना सेटिंग्स",
-                languageCurrencyTitle: "भाषा और मुद्रा",
-                currentPassword: "वर्तमान पासवर्ड",
-                newPassword: "नया पासवर्ड",
-                confirmPassword: "पासवर्ड की पुष्टि करें",
-                newPin: "नया PIN",
-                pushNotifications: "पुश सूचनाएं",
-                emailAlerts: "ईमेल अलर्ट",
-                smsAlerts: "SMS अलर्ट",
-                receiveAlerts: "अपने डिवाइस पर अलर्ट प्राप्त करें",
-                importantUpdates: "ईमेल के माध्यम से महत्वपूर्ण खाता अपडेट",
-                transactionConfirmations: "SMS के माध्यम से लेनदेन पुष्टि"
-            }
-        };
+            
+            // Update profile section labels
+            const labels = document.querySelectorAll('.profile-label');
+            labels.forEach(label => {
+                const key = label.getAttribute('data-translate');
+                if (key) {
+                    label.textContent = translateText(key, lang);
+                }
+            });
+            
+            // Update buttons
+            const buttons = document.querySelectorAll('[data-translate]');
+            buttons.forEach(button => {
+                const key = button.getAttribute('data-translate');
+                if (key) {
+                    button.textContent = translateText(key, lang);
+                }
+            });
+            
+            // Update form placeholders and labels
+            const formLabels = document.querySelectorAll('label[data-translate]');
+            formLabels.forEach(label => {
+                const key = label.getAttribute('data-translate');
+                if (key) {
+                    label.textContent = translateText(key, lang);
+                }
+            });
+            
+            // Update modal titles
+            const modalTitles = document.querySelectorAll('.modal-title[data-translate]');
+            modalTitles.forEach(title => {
+                const key = title.getAttribute('data-translate');
+                if (key) {
+                    title.textContent = translateText(key, lang);
+                }
+            });
+        }
 
         function translateText(key, lang = 'en') {
             // Extract base language code (e.g., 'en-CA' -> 'en')
@@ -2678,6 +2514,202 @@
             }, 3000);
         }
 
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnOverlay(event, modalId) {
+            if (event.target === event.currentTarget) {
+                closeModal(modalId);
+            }
+        }
+
+        // Edit profile
+        function openEditModal() {
+            document.getElementById('editFullName').value = currentUser.fullName;
+            document.getElementById('editEmail').value = currentUser.email;
+            document.getElementById('editPhone').value = currentUser.phone;
+            openModal('editModal');
+        }
+
+        function handleProfileUpdate(event) {
+            event.preventDefault();
+            
+            const result = VanstraBank.updateProfile({
+                fullName: document.getElementById('editFullName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value
+            });
+            
+            if (result.success) {
+                closeModal('editModal');
+                currentUser = result.user;
+                loadProfileData();
+                showToast('Profile updated successfully');
+            }
+        }
+
+        // Avatar functions
+        function openAvatarModal() {
+            openModal('avatarModal');
+        }
+
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showToast('Please upload an image file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                VanstraBank.updateAvatar(e.target.result);
+                currentUser.avatar = e.target.result;
+                loadProfileData();
+                closeModal('avatarModal');
+                showToast('Photo updated successfully');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeAvatar() {
+            VanstraBank.updateAvatar(null);
+            currentUser.avatar = null;
+            loadProfileData();
+            closeModal('avatarModal');
+            showToast('Photo removed');
+        }
+
+        // Security Settings
+        function openSecuritySettings() {
+            openModal('securityModal');
+        }
+
+        function handleSecurityUpdate(event) {
+            event.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const newPIN = document.getElementById('newPIN').value;
+            
+            // Validate passwords match
+            if (newPassword !== confirmPassword) {
+                showToast('Passwords do not match');
+                return;
+            }
+            
+            // Validate PIN is 4 digits
+            if (!/^\d{4}$/.test(newPIN)) {
+                showToast('PIN must be exactly 4 digits');
+                return;
+            }
+            
+            // Validate minimum password length
+            if (newPassword.length < 6) {
+                showToast('Password must be at least 6 characters');
+                return;
+            }
+            
+            // Update security settings in VanstraBank
+            const result = VanstraBank.updateSecuritySettings({
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+                pin: newPIN
+            });
+            
+            if (result.success) {
+                closeModal('securityModal');
+                showToast('Security settings updated successfully');
+                document.getElementById('securityForm').reset();
+            } else {
+                showToast(result.error || 'Failed to update security settings');
+            }
+        }
+
+        // Notifications Settings
+        function openNotificationsSettings() {
+            // Load current settings from localStorage
+            const prefs = JSON.parse(localStorage.getItem('notificationPrefs') || '{"push": true, "email": true, "sms": true}');
+            document.getElementById('pushNotif').checked = prefs.push !== false;
+            document.getElementById('emailNotif').checked = prefs.email !== false;
+            document.getElementById('smsNotif').checked = prefs.sms !== false;
+            openModal('notificationsModal');
+        }
+
+        function handleNotificationsUpdate(event) {
+            event.preventDefault();
+            
+            const prefs = {
+                push: document.getElementById('pushNotif').checked,
+                email: document.getElementById('emailNotif').checked,
+                sms: document.getElementById('smsNotif').checked
+            };
+            
+            localStorage.setItem('notificationPrefs', JSON.stringify(prefs));
+            closeModal('notificationsModal');
+            showToast('Notification preferences saved');
+        }
+
+        // Language & Currency Settings
+        function openLanguageCurrencySettings() {
+            // Load current user preferences
+            const user = VanstraBank.getCurrentUser();
+            if (user) {
+                document.getElementById('languageSelect').value = user.language || 'en';
+                document.getElementById('currencySelect').value = user.currency || 'EUR';
+            }
+            openModal('languageCurrencyModal');
+        }
+
+        function handleLanguageCurrencyUpdate(event) {
+            event.preventDefault();
+            
+            const language = document.getElementById('languageSelect').value;
+            const currency = document.getElementById('currencySelect').value;
+            
+            // Update preferences in VanstraBank
+            const result = VanstraBank.updateUserPreferences({
+                language: language,
+                currency: currency
+            });
+            
+            if (result.success) {
+                closeModal('languageCurrencyModal');
+                showToast('Language and currency preferences updated successfully');
+                
+                // Update the page language globally
+                updateGlobalLanguage(language);
+                
+                // Refresh the page to apply new formatting
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                showToast(result.error || 'Failed to update preferences');
+            }
+        }
+
+        function updateGlobalLanguage(lang) {
+            // Store language preference globally
+            localStorage.setItem('selectedLanguage', lang);
+            
+            // Update page language
+            updatePageLanguage(lang);
+            
+            // Dispatch custom event for cross-tab synchronization
+            window.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+        }
+
         // Load on DOMContentLoaded
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
@@ -2686,6 +2718,15 @@
             document.getElementById('securityForm').addEventListener('submit', handleSecurityUpdate);
             document.getElementById('notificationsForm').addEventListener('submit', handleNotificationsUpdate);
             document.getElementById('languageCurrencyForm').addEventListener('submit', handleLanguageCurrencyUpdate);
+            
+            // Listen for language change events from other tabs
+            window.addEventListener('languageChanged', function(event) {
+                updatePageLanguage(event.detail.language);
+            });
+            
+            // Initialize language on page load
+            const savedLanguage = localStorage.getItem('selectedLanguage') || 'en';
+            updatePageLanguage(savedLanguage);
         });
     </script>
 
