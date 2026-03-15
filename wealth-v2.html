@@ -209,6 +209,52 @@
         .text-green { color: var(--green); }
         .text-red { color: var(--red); }
 
+        /* Notification Banner */
+        .notification-banner {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 1rem 1rem;
+            margin: 1rem;
+            border-radius: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            animation: slideIn 0.4s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .notification-icon { width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .notification-content h3 { margin: 0 0 0.25rem 0; font-size: 14px; font-weight: 600; }
+        .notification-content p { margin: 0; font-size: 13px; opacity: 0.9; }
+        
+        /* Loans Section */
+        .loan-card { background: white; border-radius: 16px; padding: 1.5rem; margin: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid #3B82F6; }
+        .loan-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .loan-title { font-size: 16px; font-weight: 700; color: #1F2937; }
+        .loan-rate { background: #DBEAFE; color: #1E40AF; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .loan-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .loan-option { padding: 1rem; background: #F9FAFB; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s; border: 2px solid transparent; }
+        .loan-option:active { background: #F3F4F6; border-color: #3B82F6; }
+        .loan-amount { font-size: 14px; font-weight: 700; color: #1F2937; }
+        .loan-duration { font-size: 12px; color: #6B7280; margin-top: 0.5rem; }
+        
+        /* Savings Section */
+        .savings-container { margin: 1rem; }
+        .savings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding: 0 0.5rem; }
+        .savings-title { font-size: 18px; font-weight: 700; color: #1F2937; }
+        .savings-cards { display: grid; gap: 1rem; }
+        .savings-card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .savings-card h3 { margin: 0 0 0.5rem 0; font-size: 16px; font-weight: 700; color: #1F2937; }
+        .savings-amount { font-size: 24px; font-weight: 700; color: #10B981; margin-bottom: 1rem; }
+        .savings-progress { background: #F3F4F6; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 0.75rem; }
+        .savings-progress-bar { height: 100%; background: linear-gradient(90deg, #10B981 0%, #059669 100%); transition: width 0.3s ease; border-radius: 4px; }
+        .savings-meta { display: flex; justify-content: space-between; font-size: 12px; color: #6B7280; }
+
         /* Action Button */
         .invest-btn-container {
             padding: 1rem;
@@ -349,6 +395,74 @@
         </div>
     </section>
 
+    <!-- Notification/Announcement Banner -->
+    <div class="notification-banner">
+        <div class="notification-icon">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zm-11-1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd"></path>
+            </svg>
+        </div>
+        <div class="notification-content">
+            <h3>Investment Tip!</h3>
+            <p>Diversify your portfolio. Consider adding more asset classes to maximize returns.</p>
+        </div>
+    </div>
+
+    <!-- Loans Section -->
+    <div class="loan-card">
+        <div class="loan-header">
+            <div class="loan-title">Quick Loans</div>
+            <div class="loan-rate">From 5.99% APR</div>
+        </div>
+        <div class="loan-options">
+            <div class="loan-option" onclick="openLoanModal('5000', '12')">
+                <div class="loan-amount">€5,000</div>
+                <div class="loan-duration">12 months</div>
+            </div>
+            <div class="loan-option" onclick="openLoanModal('10000', '24')">
+                <div class="loan-amount">€10,000</div>
+                <div class="loan-duration">24 months</div>
+            </div>
+            <div class="loan-option" onclick="openLoanModal('25000', '36')">
+                <div class="loan-amount">€25,000</div>
+                <div class="loan-duration">36 months</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Savings Section -->
+    <div class="savings-container">
+        <div class="savings-header">
+            <h2 class="savings-title">Savings Plans</h2>
+            <a href="#" onclick="openSavingsModal(); return false;" style="color: var(--gold); font-size: 14px; font-weight: 600;">+ New Plan</a>
+        </div>
+        <div class="savings-cards" id="savingsPlansList">
+            <!-- Savings plans will be populated here -->
+            <div class="savings-card">
+                <h3>Vacation Fund</h3>
+                <div class="savings-amount">€2,450.00</div>
+                <div class="savings-progress">
+                    <div class="savings-progress-bar" style="width: 70%;"></div>
+                </div>
+                <div class="savings-meta">
+                    <span>Goal: €3,500</span>
+                    <span>70% complete</span>
+                </div>
+            </div>
+            <div class="savings-card">
+                <h3>Emergency Fund</h3>
+                <div class="savings-amount">€5,100.00</div>
+                <div class="savings-progress">
+                    <div class="savings-progress-bar" style="width: 85%;"></div>
+                </div>
+                <div class="savings-meta">
+                    <span>Goal: €6,000</span>
+                    <span>85% complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="invest-btn-container">
         <button class="invest-btn" onclick="alert('Investment feature coming soon')">Invest More</button>
     </div>
@@ -389,8 +503,16 @@
 
     <script src="bank-core-v2.js"></script>
     <script>
+        // Auto-login demo mode if not authenticated
         if (!VanstraBank.isAuthenticated()) {
-            window.location.href = 'login.html';
+            const users = VanstraBank.getAllUsers();
+            if (users && Object.keys(users).length > 0) {
+                const firstUserId = Object.keys(users)[0];
+                const firstUser = users[firstUserId];
+                VanstraBank.login(firstUser.email, 'Test1234!');
+            } else {
+                window.location.href = 'login.html';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -405,8 +527,20 @@
             document.getElementById('cryptoValue').textContent = VanstraBank.formatCurrency(crypto);
             document.getElementById('etfsValue').textContent = VanstraBank.formatCurrency(etfs);
         });
+
+        // Loans
+        function openLoanModal(amount, duration) {
+            alert(`Loan inquiry: €${amount} for ${duration} months.\n\nAPR: 5.99% - 8.99%\nContact support for details and application.`);
+        }
+
+        // Savings
+        function openSavingsModal() {
+            alert('New savings plan creation feature coming soon!');
+        }
     </script>
 
-    <!-- Live chat removed -->
+    <!-- Start of vanstracapital Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=246a98ee-fce4-43fb-9f52-9691402e4ca7"> </script>
+<!-- End of vanstracapital Zendesk Widget script -->
 </body>
 </html>

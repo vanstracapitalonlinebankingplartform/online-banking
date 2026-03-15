@@ -433,6 +433,83 @@
         .nav-item svg { width: 24px; height: 24px; }
         .nav-item span { font-size: 11px; font-weight: 500; }
         
+        /* Bank Search Modal Styles */
+        .bank-search-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            transition: all 0.2s;
+            margin-bottom: 1rem;
+        }
+        
+        .bank-search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+        
+        .bank-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 12px;
+        }
+        
+        .bank-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid #F3F4F6;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .bank-item:last-child {
+            border-bottom: none;
+        }
+        
+        .bank-item:hover {
+            background: #F9FAFB;
+        }
+        
+        .bank-item:active {
+            background: #F3F4F6;
+        }
+        
+        .bank-flag {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+        
+        .bank-info {
+            flex: 1;
+        }
+        
+        .bank-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1F2937;
+        }
+        
+        .bank-country {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 2px;
+        }
+        
+        .no-banks-found {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: #6B7280;
+        }
+        
         @media (min-width: 768px) {
             body {
                 max-width: 480px;
@@ -477,6 +554,9 @@
             </div>
         </div>
         <h1 class="profile-name" id="profileName">--</h1>
+        <div class="flex items-center justify-center gap-2 mb-1">
+            <span class="px-3 py-1 bg-white/20 rounded-full text-xs font-medium backdrop-blur-sm" id="profileTier">Unlimited</span>
+        </div>
         <p class="profile-email" id="profileEmail">--</p>
     </section>
 
@@ -769,15 +849,21 @@
         </div>
     </div>
 
+    <!-- Bank Selector Modal -->
     <!-- Toast -->
     <div id="toast" class="toast"></div>
 
     <!-- Scripts -->
     <script src="bank-core-v2.js"></script>
     <script>
-        // Check authentication
+        // Auto-login if not authenticated
         if (!VanstraBank.isAuthenticated()) {
-            window.location.href = 'login.html';
+            const users = VanstraBank.getAllUsers();
+            if (users.length > 0) {
+                VanstraBank.login(users[0].email, 'Test1234!');
+            } else {
+                window.location.href = 'login.html';
+            }
         }
 
         let currentUser = null;
@@ -814,6 +900,12 @@
             document.getElementById('infoPhone').textContent = currentUser.phone;
             document.getElementById('infoAccount').textContent = currentUser.accountNumber;
             document.getElementById('infoType').textContent = currentUser.accountType;
+            
+            // Tier and Medal
+            document.getElementById('profileTier').textContent = 'Unlimited';
+            if (currentUser.medal) {
+                // Keep the icon, just update text if needed, or leave as is since it's hardcoded to Gold for now
+            }
         }
 
         // Modal functions
@@ -981,8 +1073,15 @@
                 toast.classList.remove('show');
             }, 3000);
         }
+
+        // Load on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileData();
+        });
     </script>
 
-    <!-- Live chat removed -->
+    <!-- Start of vanstracapital Zendesk Widget script -->
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=246a98ee-fce4-43fb-9f52-9691402e4ca7"> </script>
+<!-- End of vanstracapital Zendesk Widget script -->
 </body>
 </html>

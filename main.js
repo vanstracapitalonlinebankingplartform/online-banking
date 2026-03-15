@@ -438,11 +438,18 @@ function getFromStorage(key) {
 }
 
 // Currency Utilities
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('de-DE', {
-        style: 'currency',
-        currency: 'EUR'
-    }).format(amount);
+function formatCurrency(amount, currency = 'EUR', locale = 'de-DE') {
+    try {
+        return new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency: currency
+        }).format(amount);
+    } catch (e) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount);
+    }
 }
 
 function formatNumber(number) {
@@ -543,3 +550,5 @@ window.VanstraCapital = {
     showComingSoon,
     closeComingSoon
 };
+
+// Live chat injector removed

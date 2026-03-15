@@ -205,20 +205,27 @@ class BankAPIClient {
   }
 
   /**
-   * Format currency (EUR)
+   * Format currency
    */
-  formatCurrency(amount) {
-    return new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(amount);
+  formatCurrency(amount, currency = 'EUR', locale = 'de-DE') {
+    try {
+      return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency: currency,
+      }).format(amount);
+    } catch (e) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(amount);
+    }
   }
 
   /**
    * Format date/time
    */
-  formatDate(date) {
-    return new Intl.DateTimeFormat('de-DE', {
+  formatDate(date, locale = 'de-DE') {
+    return new Intl.DateTimeFormat(locale, {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
