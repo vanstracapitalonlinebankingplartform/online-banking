@@ -40,7 +40,7 @@
         .app-header {
             background: var(--navy);
             color: white;
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 50;
@@ -49,42 +49,96 @@
         .header-content {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             position: relative;
         }
         
         .header-title {
             font-weight: 700;
-            font-size: 1.125rem;
+            font-size: 1.25rem;
+            margin: 0;
+            text-align: center;
+            flex: 1;
         }
 
-        .back-btn {
-            position: absolute;
-            left: 0;
+        .menu-btn, .get-card-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
             color: white;
             display: flex;
             align-items: center;
-            text-decoration: none;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-btn:hover, .get-card-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .menu-btn:active, .get-card-btn:active {
+            transform: scale(0.95);
         }
         
         /* Card Display */
-        .card-container {
-            padding: 1.5rem 1rem;
+        .card-section {
+            padding: 2rem 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-carousel {
+            width: 100%;
+            max-width: 320px;
+            position: relative;
+        }
+
+        .card-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
             perspective: 1000px;
         }
 
         .credit-card {
             background: linear-gradient(135deg, var(--navy) 0%, var(--slate) 100%);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 1.5rem;
             color: white;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            height: 220px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 20px 40px rgba(4, 18, 37, 0.3), 0 8px 16px rgba(4, 18, 37, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            transform-style: preserve-3d;
+        }
+
+        .credit-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 32px 64px rgba(4, 18, 37, 0.4), 0 16px 32px rgba(4, 18, 37, 0.3);
         }
 
         .credit-card::before {
@@ -94,8 +148,9 @@
             right: -50px;
             width: 200px;
             height: 200px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.08);
             border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
         }
 
         .credit-card::after {
@@ -105,14 +160,54 @@
             left: -50px;
             width: 200px;
             height: 200px;
-            background: rgba(200, 154, 58, 0.1);
+            background: rgba(200, 154, 58, 0.12);
             border-radius: 50%;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .card-status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 2;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-badge.active {
+            background: rgba(34, 197, 94, 0.9);
+            color: white;
+        }
+
+        .status-badge.frozen {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+        }
+
+        .status-badge.blocked {
+            background: rgba(156, 163, 175, 0.9);
+            color: white;
         }
 
         .card-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
 
         .card-chip {
@@ -121,6 +216,7 @@
             background: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
             border-radius: 6px;
             position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
         .card-chip::before {
@@ -139,6 +235,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .card-logo img {
@@ -146,17 +244,32 @@
             height: 24px;
         }
 
+        .card-type-label {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
         .card-number {
             font-size: 1.5rem;
             letter-spacing: 2px;
-            margin-top: 1rem;
+            margin-bottom: 1rem;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
         }
 
         .card-details {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            position: relative;
+            z-index: 1;
         }
 
         .card-label {
@@ -171,22 +284,93 @@
             font-weight: 600;
         }
 
-        .card-type {
-            font-size: 1.5rem;
-            font-weight: 700;
-            font-style: italic;
+        .card-network {
+            position: relative;
+            z-index: 1;
         }
 
-        /* Actions */
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+        .card-network img {
+            height: 24px;
+            width: auto;
+        }
+
+        /* Pagination */
+        .card-pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .pagination-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(156, 163, 175, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pagination-dot.active {
+            background: var(--gold);
+            transform: scale(1.2);
+        }
+
+        /* Primary Action Button */
+        .primary-action {
+            margin-top: 2rem;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .btn-primary-large {
+            width: 100%;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 16px;
+            padding: 1.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px rgba(200, 154, 58, 0.3);
+        }
+
+        .btn-primary-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(200, 154, 58, 0.4);
+        }
+
+        .btn-primary-large:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(200, 154, 58, 0.3);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            padding: 0 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .quick-action-row {
+            display: flex;
             gap: 1rem;
-            padding: 0 1rem;
-            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+            scrollbar-width: none;
         }
 
-        .action-item {
+        .quick-action-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-action-btn {
+            flex: 0 0 80px;
             background: white;
             border-radius: 16px;
             padding: 1rem 0.5rem;
@@ -194,16 +378,23 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: none;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .action-item:active {
-            transform: scale(0.98);
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }
 
-        .action-icon {
+        .quick-action-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .quick-action-icon {
             width: 48px;
             height: 48px;
             background: rgba(200, 154, 58, 0.1);
@@ -212,62 +403,100 @@
             align-items: center;
             justify-content: center;
             color: var(--gold);
+            transition: all 0.3s ease;
         }
 
-        .action-label {
-            font-size: 12px;
+        .quick-action-btn:hover .quick-action-icon {
+            background: var(--gold);
+            color: var(--navy);
+            transform: scale(1.1);
+        }
+
+        .quick-action-label {
+            font-size: 0.75rem;
             font-weight: 500;
-            color: #4B5563;
+            color: #374151;
+            text-align: center;
+            line-height: 1.2;
         }
 
-        /* Settings List */
-        .settings-list {
+        /* Card Settings */
+        .card-settings {
+            padding: 0 1.5rem 2rem;
+        }
+
+        .settings-container {
             background: white;
-            border-radius: 16px;
-            margin: 0 1rem;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
 
         .setting-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid #F3F4F6;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .setting-item:last-child {
             border-bottom: none;
         }
 
-        .setting-info {
+        .setting-item:hover {
+            background: #F8F9FA;
+            transform: translateX(4px);
+        }
+
+        .setting-left {
             display: flex;
             align-items: center;
             gap: 1rem;
+            flex: 1;
         }
 
         .setting-icon {
-            width: 36px;
-            height: 36px;
-            background: #F3F4F6;
-            border-radius: 8px;
+            width: 48px;
+            height: 48px;
+            background: rgba(200, 154, 58, 0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #6B7280;
+            color: var(--gold);
+            transition: all 0.3s ease;
         }
 
-        .setting-text h4 {
+        .setting-item:hover .setting-icon {
+            background: var(--gold);
+            color: var(--navy);
+            transform: scale(1.1);
+        }
+
+        .setting-content h4 {
             margin: 0;
-            font-size: 14px;
+            font-size: 1rem;
+            font-weight: 600;
             color: #1F2937;
         }
 
-        .setting-text p {
-            margin: 0;
-            font-size: 12px;
+        .setting-content p {
+            margin: 0.25rem 0 0;
+            font-size: 0.875rem;
             color: #6B7280;
+        }
+
+        .setting-arrow {
+            color: #9CA3AF;
+            transition: all 0.3s ease;
+        }
+
+        .setting-item:hover .setting-arrow {
+            color: var(--gold);
+            transform: translateX(4px);
         }
 
         /* Toggle Switch */
@@ -578,6 +807,30 @@
             margin-top: 0.25rem;
         }
 
+        /* Animations */
+        .card-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .quick-actions {
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .card-settings {
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (min-width: 768px) {
             body {
                 max-width: 480px;
@@ -597,103 +850,195 @@
     <!-- Header -->
     <header class="app-header">
         <div class="header-content">
-            <span class="header-title">My Cards</span>
+            <button class="menu-btn" onclick="showToast('Menu coming soon', 'success')">
+                <svg width="24" height="24" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            <h1 class="header-title">Cards</h1>
+            <button class="get-card-btn" onclick="openAddCardModal()">
+                <svg width="20" height="20" fill="none" stroke="white" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+            </button>
         </div>
     </header>
 
     <!-- Card Display -->
-    <section class="card-container">
-        <div class="credit-card" id="virtualCard">
-            <div class="card-top">
-                <div class="card-chip"></div>
-                <div class="card-logo">
-                    <span style="font-style: italic;">Vanstra</span>
+    <section class="card-section">
+        <div class="card-carousel">
+            <div class="card-wrapper" id="cardWrapper">
+                <div class="credit-card" id="virtualCard">
+                    <div class="card-status" id="cardStatus">
+                        <span class="status-badge active">Active</span>
+                    </div>
+                    
+                    <div class="card-top">
+                        <div class="card-chip"></div>
+                        <div class="card-logo">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z'/%3E%3Cpath d='M2 17l10 5 10-5'/%3E%3Cpath d='M2 12l10 5 10-5'/%3E%3C/svg%3E" alt="Vanstra" width="20" height="20">
+                            <span>Vanstra</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-type-label">Virtual Card</div>
+                    
+                    <div class="card-number" id="cardNumber">•••• •••• •••• ••••</div>
+                    
+                    <div class="card-details">
+                        <div>
+                            <div class="card-label">Card Holder</div>
+                            <div class="card-value" id="cardHolderName">LOADING...</div>
+                        </div>
+                        <div>
+                            <div class="card-label">Expires</div>
+                            <div class="card-value" id="cardExpiry">••/••</div>
+                        </div>
+                        <div class="card-network">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM2 6h20v12H2V6zm4 8h4v2H6v-2zm0-4h4v2H6v-2z'/%3E%3C/svg%3E" alt="Visa" width="40" height="24">
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="card-number" id="cardNumber">•••• •••• •••• ••••</div>
-            
-            <div class="card-details">
-                <div>
-                    <div class="card-label">Card Holder</div>
-                    <div class="card-value" id="cardHolderName">LOADING...</div>
-                </div>
-                <div>
-                    <div class="card-label">Expires</div>
-                    <div class="card-value" id="cardExpiry">••/••</div>
-                </div>
-                <div class="card-type">VISA</div>
+            <!-- Pagination Dots -->
+            <div class="card-pagination" id="cardPagination">
+                <span class="pagination-dot active" data-index="0"></span>
             </div>
         </div>
-    </section>
-
-    <!-- Actions -->
-    <section class="actions-grid">
-        <div class="action-item" onclick="toggleCardDetails()">
-            <div class="action-icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        
+        <!-- Primary Action Button -->
+        <div class="primary-action">
+            <button class="btn-primary-large" onclick="toggleCardDetails()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                 </svg>
-            </div>
-            <span class="action-label" id="showDetailsLabel">Show Details</span>
-        </div>
-        
-        <div class="action-item" onclick="toggleFreezeCard()">
-            <div class="action-icon" id="freezeIcon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
-            </div>
-            <span class="action-label" id="freezeLabel">Freeze</span>
-        </div>
-        
-        <div class="action-item" onclick="openAddCardModal()">
-            <div class="action-icon">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                </svg>
-            </div>
-            <span class="action-label">Add Card</span>
+                <span id="showDetailsLabel">Show Details</span>
+            </button>
         </div>
     </section>
 
-    <!-- Settings -->
-    <section class="settings-list">
-        <div class="setting-item">
-            <div class="setting-info">
-                <div class="setting-icon">
+    <!-- Quick Actions -->
+    <section class="quick-actions">
+        <div class="quick-action-row">
+            <button class="quick-action-btn" onclick="toggleFreezeCard()">
+                <div class="quick-action-icon" id="freezeIcon">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                     </svg>
                 </div>
-                <div class="setting-text">
-                    <h4>Online Payments</h4>
-                    <p>Allow internet transactions</p>
+                <span class="quick-action-label" id="freezeLabel">Freeze Card</span>
+            </button>
+            
+            <button class="quick-action-btn" onclick="copyCardNumber()">
+                <div class="quick-action-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <span class="quick-action-label">Copy Number</span>
+            </button>
+            
+            <button class="quick-action-btn" onclick="viewCardPIN()">
+                <div class="quick-action-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z"></path>
+                    </svg>
+                </div>
+                <span class="quick-action-label">View PIN</span>
+            </button>
+            
+            <button class="quick-action-btn" onclick="openCardLimits()">
+                <div class="quick-action-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <span class="quick-action-label">Card Limits</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Card Settings -->
+    <section class="card-settings">
+        <div class="settings-container">
+            <div class="setting-item" onclick="personaliseCard()">
+                <div class="setting-left">
+                    <div class="setting-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                        </svg>
+                    </div>
+                    <div class="setting-content">
+                        <h4>Personalise Card</h4>
+                        <p>Choose card design and style</p>
+                    </div>
+                </div>
+                <div class="setting-arrow">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
                 </div>
             </div>
-            <label class="switch">
-                <input type="checkbox" checked aria-label="Online Payments">
-                <span class="slider"></span>
-            </label>
-        </div>
-        
-        <div class="setting-item">
-            <div class="setting-info">
-                <div class="setting-icon">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            
+            <div class="setting-item" onclick="blockCard()">
+                <div class="setting-left">
+                    <div class="setting-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8V7z"></path>
+                        </svg>
+                    </div>
+                    <div class="setting-content">
+                        <h4>Block Card</h4>
+                        <p>Temporarily disable card</p>
+                    </div>
+                </div>
+                <div class="setting-arrow">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                 </div>
-                <div class="setting-text">
-                    <h4>Contactless</h4>
-                                        <p>Tap to pay</p>
-                                    </div>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" checked aria-label="Contactless">
-                                    <span class="slider"></span>
-                                </label>
+            </div>
+            
+            <div class="setting-item" onclick="manageCard()">
+                <div class="setting-left">
+                    <div class="setting-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="setting-content">
+                        <h4>Manage Card</h4>
+                        <p>Change PIN and spending limits</p>
+                    </div>
+                </div>
+                <div class="setting-arrow">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <div class="setting-item" onclick="openCardFAQs()">
+                <div class="setting-left">
+                    <div class="setting-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="setting-content">
+                        <h4>Card FAQs</h4>
+                        <p>Learn more about card usage</p>
+                    </div>
+                </div>
+                <div class="setting-arrow">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -786,9 +1131,15 @@
         </a>
         <a href="dashboard-v2.html" class="nav-item" onclick="localStorage.setItem('openTransfer', 'true');">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
             </svg>
-            <span>Transfer</span>
+            <span>Send</span>
+        </a>
+        <a href="dashboard-v2.html" class="nav-item" onclick="localStorage.setItem('openPayBills', 'true');">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            <span>Pay</span>
         </a>
         <a href="cards-v2.html" class="nav-item active">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -796,17 +1147,11 @@
             </svg>
             <span>Cards</span>
         </a>
-        <a href="wealth-v2.html" class="nav-item">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>Wealth</span>
-        </a>
         <a href="profile-v2.html" class="nav-item">
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
             </svg>
-            <span>Profile</span>
+            <span>More</span>
         </a>
     </nav>
 
@@ -840,7 +1185,54 @@
             
             // Simulate persistent card data
             loadCardData(currentUser.id);
+            
+            // Initialize card carousel
+            initializeCardCarousel();
         });
+
+        function initializeCardCarousel() {
+            const cardWrapper = document.getElementById('cardWrapper');
+            const card = document.getElementById('virtualCard');
+            
+            // Add swipe gesture support
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+            
+            card.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+            
+            card.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                const diff = startX - currentX;
+                card.style.transform = `translateX(${-diff * 0.3}px)`;
+            });
+            
+            card.addEventListener('touchend', () => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                const diff = startX - currentX;
+                card.style.transform = '';
+                
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0 && currentCardIndex < userCards.length - 1) {
+                        // Swipe left - next card
+                        currentCardIndex++;
+                        updateCardUI();
+                        showToast('Next card', 'success');
+                    } else if (diff < 0 && currentCardIndex > 0) {
+                        // Swipe right - previous card
+                        currentCardIndex--;
+                        updateCardUI();
+                        showToast('Previous card', 'success');
+                    }
+                }
+            });
+        }
 
         function loadCardData(userId) {
             const storedCards = JSON.parse(localStorage.getItem('vanstraCards') || '{}');
@@ -888,7 +1280,40 @@
             isFrozen = cardData.frozen;
             
             updateCardDisplay();
+            updateCardStatus();
+            updatePaginationDots();
             updateFreezeUI();
+        }
+
+        function updateCardStatus() {
+            const statusBadge = document.getElementById('cardStatus');
+            const cardData = userCards[currentCardIndex];
+            
+            statusBadge.className = 'status-badge';
+            
+            if (cardData.frozen) {
+                statusBadge.classList.add('frozen');
+                statusBadge.textContent = 'Frozen';
+            } else {
+                statusBadge.classList.add('active');
+                statusBadge.textContent = 'Active';
+            }
+        }
+
+        function updatePaginationDots() {
+            const pagination = document.getElementById('cardPagination');
+            pagination.innerHTML = '';
+            
+            userCards.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.className = 'pagination-dot' + (index === currentCardIndex ? ' active' : '');
+                dot.setAttribute('data-index', index);
+                dot.onclick = () => {
+                    currentCardIndex = index;
+                    updateCardUI();
+                };
+                pagination.appendChild(dot);
+            });
         }
 
         function updateCardDisplay() {
@@ -924,8 +1349,16 @@
         function toggleCardDetails() {
             isDetailsVisible = !isDetailsVisible;
             const label = document.getElementById('showDetailsLabel');
+            const card = document.getElementById('virtualCard');
+            
             label.textContent = isDetailsVisible ? 'Hide Details' : 'Show Details';
-            updateCardDisplay();
+            
+            // Add flip animation
+            card.style.transform = 'rotateY(180deg)';
+            setTimeout(() => {
+                updateCardDisplay();
+                card.style.transform = 'rotateY(0deg)';
+            }, 150);
         }
 
         function toggleFreezeCard() {
@@ -977,6 +1410,59 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 3000);
+        }
+
+        // Quick Action Functions
+        function copyCardNumber() {
+            if (userCards.length === 0) return;
+            
+            const cardData = userCards[currentCardIndex];
+            const fullNumber = cardData.number;
+            
+            navigator.clipboard.writeText(fullNumber).then(() => {
+                showToast('Card number copied to clipboard', 'success');
+            }).catch(() => {
+                showToast('Failed to copy card number', 'error');
+            });
+        }
+
+        function viewCardPIN() {
+            if (userCards.length === 0) return;
+            
+            // In a real app, this would require authentication
+            showToast('PIN: 1234 (Demo only)', 'success');
+        }
+
+        function openCardLimits() {
+            showToast('Card limits management coming soon', 'success');
+        }
+
+        // Settings Functions
+        function personaliseCard() {
+            // Open the existing add card modal for design selection
+            openAddCardModal();
+        }
+
+        function blockCard() {
+            if (userCards.length === 0) return;
+            
+            const cardData = userCards[currentCardIndex];
+            cardData.frozen = true;
+            
+            const currentUser = VanstraBank.getCurrentUser();
+            saveCards(currentUser.id, userCards);
+            
+            updateCardUI();
+            showToast('Card blocked successfully', 'success');
+        }
+
+        function manageCard() {
+            showToast('Card management features coming soon', 'success');
+        }
+
+        function openCardFAQs() {
+            showToast('Opening card FAQs...', 'success');
+            // In a real app, this would open a help modal or navigate to FAQ page
         }
 
         // Modal Functions
